@@ -1,0 +1,13 @@
+%YAML 1.2
+---
+db:
+  jdbc:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/learn?currentSchema=movieland
+    username: postgres
+    password: root
+    initialSize: 4
+    maxTotal: 8
+
+movie:
+  randomCount: 3

@@ -11,6 +11,7 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <context:property-placeholder properties-ref="properties"/> <!--Had to duplicate it here. Otherwise @Value doesn't work in Controller :-/ -->
     <context:component-scan base-package="com.filk.web"/>
     <mvc:annotation-driven/>
 
