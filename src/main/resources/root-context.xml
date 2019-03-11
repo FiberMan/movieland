@@ -23,6 +23,5 @@
         <property name="password" value="${db.jdbc.password}"/>
         <property name="initialSize" value="${db.jdbc.initialSize}"/>
         <property name="maxTotal" value="${db.jdbc.maxTotal}"/>
-
     </bean>
 </beans>

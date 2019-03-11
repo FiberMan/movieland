@@ -2,14 +2,11 @@ package com.filk.dao.jdbc;
 
 import com.filk.dao.MovieDao;
 import com.filk.entity.Movie;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
@@ -18,15 +15,9 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/root-context.xml"})
-//@WebAppConfiguration
 public class JdbcMovieDaoTest {
     @Autowired
     private MovieDao movieDao;
-
-    @Before
-    public void setup() {
-
-    }
 
     @Test
     public void getAll() {

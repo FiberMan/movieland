@@ -2,7 +2,6 @@ package com.filk.web.controller;
 
 import com.filk.entity.Movie;
 import com.filk.service.MovieService;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +10,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Arrays;
 
@@ -34,9 +32,9 @@ public class MovieControllerTest {
         MovieController movieController = new MovieController(movieServiceMock);
 
         this.mockMvc = standaloneSetup(movieController)
-                .defaultRequest(get("/").accept(MediaType.APPLICATION_JSON))
+                .defaultRequest(get("/").accept(MediaType.APPLICATION_JSON_UTF8))
                 .alwaysExpect(status().isOk())
-                .alwaysExpect(content().contentType("application/json;charset=UTF-8"))
+                .alwaysExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .build();
     }
 
@@ -66,7 +64,7 @@ public class MovieControllerTest {
 
         when(movieServiceMock.getAll()).thenReturn(Arrays.asList(movie1, movie2));
 
-        MvcResult mvcResult = this.mockMvc.perform(get("/movie"))
+        mockMvc.perform(get("/movie"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -84,11 +82,9 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].yearOfRelease", is("2020")))
                 .andExpect(jsonPath("$[1].picturePath", is("https://picture.url.com/pic2.jpg")))
                 .andExpect(jsonPath("$[1].rating", is(9.0)))
-                .andExpect(jsonPath("$[1].price", is(13.0)))
+                .andExpect(jsonPath("$[1].price", is(13.0)));
 
-                .andReturn();
-
-        Assert.assertEquals("application/json;charset=UTF-8",
-                mvcResult.getResponse().getContentType());
+        verify(movieServiceMock, times(1)).getAll();
+        verifyNoMoreInteractions(movieServiceMock);
     }
 }

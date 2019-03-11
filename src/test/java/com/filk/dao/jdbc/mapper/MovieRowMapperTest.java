@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,7 +29,7 @@ public class MovieRowMapperTest {
 
         Movie movie = new MovieRowMapper().mapRow(resultSetMock, 0);
 
-        assert movie != null;
+        assertNotNull(movie);
         assertEquals(1, movie.getId());
         assertEquals("Кино", movie.getNameRussian());
         assertEquals("Movie", movie.getNameNative());

@@ -1,15 +1,15 @@
 package com.filk.entity;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.filk.web.serializer.MovieSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@JsonSerialize(using = MovieSerializer.class)
 public class Movie {
     private int id;
     private String nameRussian;
     private String nameNative;
     private String yearOfRelease;
+    @JsonIgnore
     private String country;
+    @JsonIgnore
     private String description;
     private String picturePath;
     private double rating;
