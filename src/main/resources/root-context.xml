@@ -21,5 +21,8 @@
         <property name="url" value="${db.jdbc.url}"/>
         <property name="username" value="${db.jdbc.username}"/>
         <property name="password" value="${db.jdbc.password}"/>
+        <property name="initialSize" value="${db.jdbc.initialSize}"/>
+        <property name="maxTotal" value="${db.jdbc.maxTotal}"/>
+
     </bean>
 </beans>

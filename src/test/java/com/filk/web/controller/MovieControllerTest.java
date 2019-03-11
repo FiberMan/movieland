@@ -66,7 +66,7 @@ public class MovieControllerTest {
 
         when(movieServiceMock.getAll()).thenReturn(Arrays.asList(movie1, movie2));
 
-        MvcResult mvcResult = this.mockMvc.perform(get("/api/v1/movie"))
+        MvcResult mvcResult = this.mockMvc.perform(get("/movie"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
