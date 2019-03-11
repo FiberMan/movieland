@@ -12,8 +12,8 @@ public class Movie {
     private String country;
     private String description;
     private String picturePath;
-    private int rating;
-    private int price;
+    private double rating;
+    private double price;
 
     public String getCountry() {
         return country;
@@ -63,19 +63,19 @@ public class Movie {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
