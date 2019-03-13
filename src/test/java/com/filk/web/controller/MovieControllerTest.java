@@ -11,7 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -21,11 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/root-context.xml"})
+@ContextConfiguration(locations = {"classpath:root-context.xml"})
 @WebAppConfiguration
 public class MovieControllerTest {
     private MockMvc mockMvc;
     private MovieService movieServiceMock = mock(MovieService.class);
+    private List<Movie> movies = new ArrayList<>();
 
     @Before
     public void setup() throws Exception {
@@ -36,10 +38,7 @@ public class MovieControllerTest {
                 .alwaysExpect(status().isOk())
                 .alwaysExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .build();
-    }
 
-    @Test
-    public void getAllMoviesJson() throws Exception {
         Movie movie1 = new Movie();
         movie1.setId(1);
         movie1.setNameRussian("Кино 1");
@@ -62,7 +61,13 @@ public class MovieControllerTest {
         movie2.setRating(9);
         movie2.setPrice(13);
 
-        when(movieServiceMock.getAll()).thenReturn(Arrays.asList(movie1, movie2));
+        movies.add(movie1);
+        movies.add(movie2);
+    }
+
+    @Test
+    public void getAllMoviesJson() throws Exception {
+        when(movieServiceMock.getAll()).thenReturn(movies);
 
         mockMvc.perform(get("/movie"))
                 .andDo(print())
@@ -85,6 +90,34 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].price", is(13.0)));
 
         verify(movieServiceMock, times(1)).getAll();
+        verifyNoMoreInteractions(movieServiceMock);
+    }
+
+    @Test
+    public void getRandomMoviesJson() throws Exception {
+        when(movieServiceMock.getRandom()).thenReturn(movies);
+
+        mockMvc.perform(get("/movie/random"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].nameRussian", is("Кино 1")))
+                .andExpect(jsonPath("$[0].nameNative", is("Movie 1")))
+                .andExpect(jsonPath("$[0].yearOfRelease", is("2010")))
+                .andExpect(jsonPath("$[0].picturePath", is("https://picture.url.com/pic.jpg")))
+                .andExpect(jsonPath("$[0].rating", is(8.99)))
+                .andExpect(jsonPath("$[0].price", is(188.01)))
+
+                .andExpect(jsonPath("$[1].id", is(2)))
+                .andExpect(jsonPath("$[1].nameRussian", is("Кино 2")))
+                .andExpect(jsonPath("$[1].nameNative", is("Movie 2")))
+                .andExpect(jsonPath("$[1].yearOfRelease", is("2020")))
+                .andExpect(jsonPath("$[1].picturePath", is("https://picture.url.com/pic2.jpg")))
+                .andExpect(jsonPath("$[1].rating", is(9.0)))
+                .andExpect(jsonPath("$[1].price", is(13.0)));
+
+        verify(movieServiceMock, times(1)).getRandom();
         verifyNoMoreInteractions(movieServiceMock);
     }
 }

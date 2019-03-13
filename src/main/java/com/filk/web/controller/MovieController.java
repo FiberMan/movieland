@@ -4,7 +4,6 @@ import com.filk.entity.Movie;
 
 import com.filk.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,9 +12,6 @@ import java.util.List;
 @RestController
 public class MovieController {
     private MovieService movieService;
-
-    @Value("${movie.randomCount}")
-    private String randomCount;
 
     @Autowired
     public MovieController(MovieService movieService) {
@@ -29,6 +25,6 @@ public class MovieController {
 
     @GetMapping("/movie/random")
     public List<Movie> getRandomMovies() {
-        return movieService.getRandom(Integer.parseInt(randomCount));
+        return movieService.getRandom();
     }
 }

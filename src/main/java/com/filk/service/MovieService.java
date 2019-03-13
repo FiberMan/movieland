@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MovieService {
     List<Movie> getAll();
-    List<Movie> getRandom(int count);
+    List<Movie> getRandom();
 }

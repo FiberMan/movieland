@@ -10,8 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/root-context.xml"})
@@ -26,14 +25,7 @@ public class JdbcMovieDaoTest {
         assertNotNull(movies);
         assertEquals(25, movies.size());
 
-        Movie checkMovie = null;
-
-        for (Movie movie : movies) {
-            if(movie.getId() == 1) {
-                checkMovie = movie;
-                break;
-            }
-        }
+        Movie checkMovie = movies.get(0);
 
         assertNotNull(checkMovie);
         assertEquals("Побег из Шоушенка", checkMovie.getNameRussian());
@@ -48,14 +40,7 @@ public class JdbcMovieDaoTest {
         assertEquals(8.9, checkMovie.getRating(), 0.01);
         assertEquals(123.45, checkMovie.getPrice(), 0.01);
 
-        checkMovie = null;
-
-        for (Movie movie : movies) {
-            if(movie.getId() == 24) {
-                checkMovie = movie;
-                break;
-            }
-        }
+        checkMovie = movies.get(23);
 
         assertNotNull(checkMovie);
         assertEquals("Джанго освобожденный", checkMovie.getNameRussian());
@@ -69,5 +54,24 @@ public class JdbcMovieDaoTest {
         assertEquals("https://images-na.ssl-images-amazon.com/images/M/MV5BMjIyNTQ5NjQ1OV5BMl5BanBnXkFtZTcwODg1MDU4OA@@._V1._SY209_CR0,0,140,209_.jpg", checkMovie.getPicturePath());
         assertEquals(8.5, checkMovie.getRating(), 0.01);
         assertEquals(170.00, checkMovie.getPrice(), 0.01);
+    }
+
+    @Test
+    public void getRandom() {
+        List<Movie> movies = movieDao.getRandom(3);
+
+        assertNotNull(movies);
+        assertEquals(3, movies.size());
+
+        String movieIds1 = movies.get(0).getId() + "_" + movies.get(1).getId() + "_" + movies.get(2).getId();
+
+        movies = movieDao.getRandom(3);
+
+        assertNotNull(movies);
+        assertEquals(3, movies.size());
+
+        String movieIds2 = movies.get(0).getId() + "_" + movies.get(1).getId() + "_" + movies.get(2).getId();
+
+        assertNotEquals(movieIds1, movieIds2);
     }
 }
