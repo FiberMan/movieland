@@ -12,6 +12,9 @@ db:
 movie:
   randomCount: 3
 
+genre:
+  cacheUpdatePeriodHours: 4
+
 logger:
   fileName: movieland
   logLevelFile: DEBUG
