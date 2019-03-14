@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class DefaultMovieService implements MovieService {
@@ -22,8 +23,8 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getAll() {
-        return movieDao.getAll();
+    public List<Movie> getAll(Map<String, Object> requestParameters) {
+        return movieDao.getAll(requestParameters);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getByGenre(int genreId) {
-        return movieDao.getByGenre(genreId);
+    public List<Movie> getByGenre(Map<String, Object> requestParameters) {
+        return movieDao.getByGenre(requestParameters);
     }
 }

@@ -6,9 +6,12 @@ import com.filk.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class MovieController {
@@ -20,8 +23,13 @@ public class MovieController {
     }
 
     @GetMapping("/movie")
-    public List<Movie> getAllMovies() {
-        return movieService.getAll();
+    public List<Movie> getAllMovies(@RequestParam(name = "sort", required = false) String sortBy,
+                                    @RequestParam(name = "order", required = false) String sortOrder) {
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("sortBy", sortBy);
+        requestParams.put("sortOrder", sortOrder);
+
+        return movieService.getAll(requestParams);
     }
 
     @GetMapping("/movie/random")
@@ -30,7 +38,14 @@ public class MovieController {
     }
 
     @GetMapping("/movie/genre/{genreId}")
-    public List<Movie> getMoviesByGenre(@PathVariable int genreId) {
-        return movieService.getByGenre(genreId);
+    public List<Movie> getMoviesByGenre(@PathVariable int genreId,
+                                        @RequestParam(name = "sort", required = false) String sortBy,
+                                        @RequestParam(name = "order", required = false) String sortOrder) {
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("genreId", genreId);
+        requestParams.put("sortBy", sortBy);
+        requestParams.put("sortOrder", sortOrder);
+
+        return movieService.getByGenre(requestParams);
     }
 }

@@ -9,15 +9,15 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class JdbcMovieDao implements MovieDao {
-    private final String GET_ALL_MOVIES = "SELECT movie_id, name, name_original, year, country, description, poster_url, rating, price FROM movie ORDER BY movie_id";
+    private final String GET_ALL_MOVIES = "SELECT movie_id, name, name_original, year, country, description, poster_url, rating, price FROM movie";
     private final String GET_RANDOM_MOVIES = "SELECT movie_id, name, name_original, year, country, description, poster_url, rating, price FROM movie order by random() limit ?";
     private final String GET_MOVIES_BY_GENRE = "SELECT m.movie_id, name, name_original, year, country, description, poster_url, rating, price \n" +
             "FROM movie m, movie_genre mg\n" +
-            "WHERE m.movie_id = mg.movie_id AND mg.genre_id = ?\n" +
-            "ORDER BY movie_id";
+            "WHERE m.movie_id = mg.movie_id AND mg.genre_id = ?";
 
     private final RowMapper<Movie> movieRowMapper = new MovieRowMapper();
 
@@ -29,8 +29,8 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getAll() {
-        return jdbcTemplate.query(GET_ALL_MOVIES, movieRowMapper);
+    public List<Movie> getAll(Map<String, Object> requestParameters) {
+        return jdbcTemplate.query(GET_ALL_MOVIES + addOrder(requestParameters), movieRowMapper);
     }
 
     @Override
@@ -39,7 +39,31 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getByGenre(int genreId) {
-        return jdbcTemplate.query(GET_MOVIES_BY_GENRE, movieRowMapper, genreId);
+    public List<Movie> getByGenre(Map<String, Object> requestParameters) {
+        int genreId = (int) requestParameters.get("genreId");
+        return jdbcTemplate.query(GET_MOVIES_BY_GENRE + addOrder(requestParameters), movieRowMapper, genreId);
+    }
+
+    private String addOrder(Map<String, Object> requestParameters) {
+        String sortBy = (String) requestParameters.get("sortBy");
+        String sortOrder = (String) requestParameters.get("sortOrder");
+
+        if ("rating".equals(sortBy)) {
+            if ("asc".equals(sortOrder)) {
+                return " ORDER BY rating ASC";
+            } else {
+                return " ORDER BY rating DESC";
+            }
+        }
+
+        if ("price".equals(sortBy)) {
+            if ("asc".equals(sortOrder)) {
+                return " ORDER BY price ASC";
+            } else {
+                return " ORDER BY price DESC";
+            }
+        }
+
+        return " ORDER BY movie_id";
     }
 }
