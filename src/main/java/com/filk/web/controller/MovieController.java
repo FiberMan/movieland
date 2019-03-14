@@ -5,6 +5,7 @@ import com.filk.entity.Movie;
 import com.filk.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,5 +27,10 @@ public class MovieController {
     @GetMapping("/movie/random")
     public List<Movie> getRandomMovies() {
         return movieService.getRandom();
+    }
+
+    @GetMapping("/movie/genre/{genreId}")
+    public List<Movie> getMoviesByGenre(@PathVariable int genreId) {
+        return movieService.getByGenre(genreId);
     }
 }
