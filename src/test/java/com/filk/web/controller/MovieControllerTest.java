@@ -12,7 +12,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
@@ -31,6 +33,7 @@ public class MovieControllerTest {
 
     @Before
     public void setup() throws Exception {
+        reset(movieServiceMock);
         MovieController movieController = new MovieController(movieServiceMock);
 
         this.mockMvc = standaloneSetup(movieController)
@@ -67,7 +70,10 @@ public class MovieControllerTest {
 
     @Test
     public void getAllMoviesJson() throws Exception {
-        when(movieServiceMock.getAll()).thenReturn(movies);
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("sortBy", null);
+        requestParams.put("sortOrder", null);
+        when(movieServiceMock.getAll(requestParams)).thenReturn(movies);
 
         mockMvc.perform(get("/movie"))
                 .andDo(print())
@@ -89,7 +95,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].rating", is(9.0)))
                 .andExpect(jsonPath("$[1].price", is(13.0)));
 
-        verify(movieServiceMock, times(1)).getAll();
+        verify(movieServiceMock, times(1)).getAll(requestParams);
         verifyNoMoreInteractions(movieServiceMock);
     }
 
@@ -123,7 +129,11 @@ public class MovieControllerTest {
 
     @Test
     public void getMoviesByGenreJson() throws Exception {
-        when(movieServiceMock.getByGenre(3)).thenReturn(movies);
+        Map<String, Object> requestParams = new HashMap<>();
+        requestParams.put("sortBy", null);
+        requestParams.put("sortOrder", null);
+        requestParams.put("genreId", 3);
+        when(movieServiceMock.getByGenre(requestParams)).thenReturn(movies);
 
         mockMvc.perform(get("/movie/genre/3"))
                 .andDo(print())
@@ -145,7 +155,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].rating", is(9.0)))
                 .andExpect(jsonPath("$[1].price", is(13.0)));
 
-        verify(movieServiceMock, times(1)).getByGenre(3);
+        verify(movieServiceMock, times(1)).getByGenre(requestParams);
         verifyNoMoreInteractions(movieServiceMock);
     }
 }

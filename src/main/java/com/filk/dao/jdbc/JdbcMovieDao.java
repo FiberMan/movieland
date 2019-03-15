@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,11 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
+    public List<Movie> getAll() {
+        return getAll(new HashMap<>());
+    }
+
+    @Override
     public List<Movie> getAll(Map<String, Object> requestParameters) {
         return jdbcTemplate.query(GET_ALL_MOVIES + addOrder(requestParameters), movieRowMapper);
     }
@@ -39,9 +45,16 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
+    public List<Movie> getByGenre(int genreId) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("genreId", genreId);
+
+        return getByGenre(parameters);
+    }
+
+    @Override
     public List<Movie> getByGenre(Map<String, Object> requestParameters) {
-        int genreId = (int) requestParameters.get("genreId");
-        return jdbcTemplate.query(GET_MOVIES_BY_GENRE + addOrder(requestParameters), movieRowMapper, genreId);
+        return jdbcTemplate.query(GET_MOVIES_BY_GENRE + addOrder(requestParameters), movieRowMapper, requestParameters.get("genreId"));
     }
 
     private String addOrder(Map<String, Object> requestParameters) {
@@ -57,10 +70,10 @@ public class JdbcMovieDao implements MovieDao {
         }
 
         if ("price".equals(sortBy)) {
-            if ("asc".equals(sortOrder)) {
-                return " ORDER BY price ASC";
-            } else {
+            if ("desc".equals(sortOrder)) {
                 return " ORDER BY price DESC";
+            } else {
+                return " ORDER BY price ASC";
             }
         }
 

@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -57,6 +59,82 @@ public class JdbcMovieDaoTest {
     }
 
     @Test
+    public void getAllSortByRatingAsc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "rating");
+        parameters.put("sortOrder", "asc");
+
+        List<Movie> movies = movieDao.getAll(parameters);
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Блеф", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByRatingDesc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "rating");
+        parameters.put("sortOrder", "desc");
+
+        List<Movie> movies = movieDao.getAll(parameters);
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Побег из Шоушенка", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByRatingDefault() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "rating");
+
+        List<Movie> movies = movieDao.getAll(parameters);
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Побег из Шоушенка", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByPriceAsc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "price");
+        parameters.put("sortOrder", "asc");
+
+        List<Movie> movies = movieDao.getAll(parameters);
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Блеф", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByPriceDesc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "price");
+        parameters.put("sortOrder", "desc");
+
+        List<Movie> movies = movieDao.getAll(parameters);
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Форрест Гамп", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByPriceDefault() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "price");
+
+        List<Movie> movies = movieDao.getAll(parameters);
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Блеф", movies.get(0).getNameRussian());
+    }
+
+    @Test
     public void getRandom() {
         List<Movie> movies = movieDao.getRandom(3);
 
@@ -92,5 +170,87 @@ public class JdbcMovieDaoTest {
         assertEquals("Форрест Гамп", movies.get(0).getNameRussian());
         assertEquals("Жизнь прекрасна", movies.get(1).getNameRussian());
         assertEquals("Титаник", movies.get(2).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByRatingAsc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "rating");
+        parameters.put("sortOrder", "asc");
+        parameters.put("genreId", 9);
+
+        List<Movie> movies = movieDao.getByGenre(parameters);
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Звёздные войны: Эпизод 4 – Новая надежда", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByRatingDesc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "rating");
+        parameters.put("sortOrder", "desc");
+        parameters.put("genreId", 9);
+
+        List<Movie> movies = movieDao.getByGenre(parameters);
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByRatingDefault() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "rating");
+        parameters.put("genreId", 9);
+
+        List<Movie> movies = movieDao.getByGenre(parameters);
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByPriceAsc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "price");
+        parameters.put("sortOrder", "asc");
+        parameters.put("genreId", 9);
+
+        List<Movie> movies = movieDao.getByGenre(parameters);
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByPriceDesc() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "price");
+        parameters.put("sortOrder", "desc");
+        parameters.put("genreId", 9);
+
+        List<Movie> movies = movieDao.getByGenre(parameters);
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Темный рыцарь", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByPriceDefault() {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("sortBy", "price");
+        parameters.put("genreId", 9);
+
+        List<Movie> movies = movieDao.getByGenre(parameters);
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
     }
 }

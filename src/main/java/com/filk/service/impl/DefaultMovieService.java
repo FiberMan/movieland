@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,11 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
+    public List<Movie> getAll() {
+        return movieDao.getAll();
+    }
+
+    @Override
     public List<Movie> getAll(Map<String, Object> requestParameters) {
         return movieDao.getAll(requestParameters);
     }
@@ -30,6 +36,14 @@ public class DefaultMovieService implements MovieService {
     @Override
     public List<Movie> getRandom() {
         return movieDao.getRandom(randomCount);
+    }
+
+    @Override
+    public List<Movie> getByGenre(int genreId) {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("genreId", genreId);
+
+        return getByGenre(parameters);
     }
 
     @Override
