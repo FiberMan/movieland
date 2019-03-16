@@ -28,6 +28,7 @@ public class JdbcMovieDao implements MovieDao {
         return jdbcTemplate.query(GET_ALL_MOVIES, movieRowMapper);
     }
 
+    @Override
     public List<Movie> getRandom(int count) {
         return jdbcTemplate.query(GET_RANDOM_MOVIES, movieRowMapper, count);
     }
