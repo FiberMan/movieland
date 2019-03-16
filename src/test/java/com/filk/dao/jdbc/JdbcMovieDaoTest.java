@@ -74,4 +74,23 @@ public class JdbcMovieDaoTest {
 
         assertNotEquals(movieIds1, movieIds2);
     }
+
+    @Test
+    public void getByGenre() {
+        List<Movie> movies;
+
+        movies = movieDao.getByGenre(1);
+        assertNotNull(movies);
+        assertEquals(16, movies.size());
+        assertEquals("Побег из Шоушенка", movies.get(0).getNameRussian());
+        assertEquals("Гладиатор", movies.get(10).getNameRussian());
+        assertEquals("Танцующий с волками", movies.get(15).getNameRussian());
+
+        movies = movieDao.getByGenre(5);
+        assertNotNull(movies);
+        assertEquals(3, movies.size());
+        assertEquals("Форрест Гамп", movies.get(0).getNameRussian());
+        assertEquals("Жизнь прекрасна", movies.get(1).getNameRussian());
+        assertEquals("Титаник", movies.get(2).getNameRussian());
+    }
 }
