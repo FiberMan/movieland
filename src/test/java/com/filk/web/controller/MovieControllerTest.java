@@ -120,4 +120,32 @@ public class MovieControllerTest {
         verify(movieServiceMock, times(1)).getRandom();
         verifyNoMoreInteractions(movieServiceMock);
     }
+
+    @Test
+    public void getMoviesByGenreJson() throws Exception {
+        when(movieServiceMock.getByGenre(3)).thenReturn(movies);
+
+        mockMvc.perform(get("/movie/genre/3"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].nameRussian", is("Кино 1")))
+                .andExpect(jsonPath("$[0].nameNative", is("Movie 1")))
+                .andExpect(jsonPath("$[0].yearOfRelease", is("2010")))
+                .andExpect(jsonPath("$[0].picturePath", is("https://picture.url.com/pic.jpg")))
+                .andExpect(jsonPath("$[0].rating", is(8.99)))
+                .andExpect(jsonPath("$[0].price", is(188.01)))
+
+                .andExpect(jsonPath("$[1].id", is(2)))
+                .andExpect(jsonPath("$[1].nameRussian", is("Кино 2")))
+                .andExpect(jsonPath("$[1].nameNative", is("Movie 2")))
+                .andExpect(jsonPath("$[1].yearOfRelease", is("2020")))
+                .andExpect(jsonPath("$[1].picturePath", is("https://picture.url.com/pic2.jpg")))
+                .andExpect(jsonPath("$[1].rating", is(9.0)))
+                .andExpect(jsonPath("$[1].price", is(13.0)));
+
+        verify(movieServiceMock, times(1)).getByGenre(3);
+        verifyNoMoreInteractions(movieServiceMock);
+    }
 }

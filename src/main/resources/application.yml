@@ -11,3 +11,8 @@ db:
 
 movie:
   randomCount: 3
+
+logger:
+  fileName: movieland
+  logLevelFile: DEBUG
+  logLevelConsole: DEBUG
