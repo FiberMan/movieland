@@ -41,6 +41,13 @@
             <version>1.2.3</version>
         </dependency>
 
+        <!--Properties-->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.24</version>
+        </dependency>
+
         <!--Spring-->
         <dependency>
             <groupId>org.springframework</groupId>

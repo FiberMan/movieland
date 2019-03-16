@@ -22,4 +22,9 @@ public class MovieController {
     public List<Movie> getAllMovies() {
         return movieService.getAll();
     }
+
+    @GetMapping("/movie/random")
+    public List<Movie> getRandomMovies() {
+        return movieService.getRandom();
+    }
 }
