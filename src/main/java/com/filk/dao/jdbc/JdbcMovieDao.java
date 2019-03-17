@@ -3,14 +3,13 @@ package com.filk.dao.jdbc;
 import com.filk.dao.MovieDao;
 import com.filk.dao.jdbc.mapper.MovieRowMapper;
 import com.filk.entity.Movie;
+import com.filk.entity.RequestParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class JdbcMovieDao implements MovieDao {
@@ -30,12 +29,7 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getAll() {
-        return getAll(new HashMap<>());
-    }
-
-    @Override
-    public List<Movie> getAll(Map<String, Object> requestParameters) {
+    public List<Movie> getAll(RequestParameters requestParameters) {
         return jdbcTemplate.query(GET_ALL_MOVIES + addOrder(requestParameters), movieRowMapper);
     }
 
@@ -45,36 +39,13 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getByGenre(int genreId) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("genreId", genreId);
-
-        return getByGenre(parameters);
+    public List<Movie> getByGenre(int genreId, RequestParameters requestParameters) {
+        return jdbcTemplate.query(GET_MOVIES_BY_GENRE + addOrder(requestParameters), movieRowMapper, genreId);
     }
 
-    @Override
-    public List<Movie> getByGenre(Map<String, Object> requestParameters) {
-        return jdbcTemplate.query(GET_MOVIES_BY_GENRE + addOrder(requestParameters), movieRowMapper, requestParameters.get("genreId"));
-    }
-
-    private String addOrder(Map<String, Object> requestParameters) {
-        String sortBy = (String) requestParameters.get("sortBy");
-        String sortOrder = (String) requestParameters.get("sortOrder");
-
-        if ("rating".equals(sortBy)) {
-            if ("asc".equals(sortOrder)) {
-                return " ORDER BY rating ASC";
-            } else {
-                return " ORDER BY rating DESC";
-            }
-        }
-
-        if ("price".equals(sortBy)) {
-            if ("desc".equals(sortOrder)) {
-                return " ORDER BY price DESC";
-            } else {
-                return " ORDER BY price ASC";
-            }
+    private String addOrder(RequestParameters requestParameters) {
+        if (requestParameters.getSortBy() != null) {
+            return " ORDER BY " + requestParameters.getSortBy() + " " + requestParameters.getSortOrder() + ", movie_id";
         }
 
         return " ORDER BY movie_id";

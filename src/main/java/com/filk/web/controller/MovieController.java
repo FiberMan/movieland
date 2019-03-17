@@ -2,18 +2,18 @@ package com.filk.web.controller;
 
 import com.filk.entity.Movie;
 
+import com.filk.entity.RequestParameters;
 import com.filk.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
+@RequestMapping("/movie")
 public class MovieController {
     private MovieService movieService;
 
@@ -22,30 +22,19 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    @GetMapping("/movie")
-    public List<Movie> getAllMovies(@RequestParam(name = "sort", required = false) String sortBy,
-                                    @RequestParam(name = "order", required = false) String sortOrder) {
-        Map<String, Object> requestParams = new HashMap<>();
-        requestParams.put("sortBy", sortBy);
-        requestParams.put("sortOrder", sortOrder);
-
-        return movieService.getAll(requestParams);
+    @GetMapping
+    public List<Movie> getAllMovies(RequestParameters requestParameters) {
+        return movieService.getAll(requestParameters);
     }
 
-    @GetMapping("/movie/random")
+    @GetMapping("/random")
     public List<Movie> getRandomMovies() {
         return movieService.getRandom();
     }
 
-    @GetMapping("/movie/genre/{genreId}")
+    @GetMapping("/genre/{genreId}")
     public List<Movie> getMoviesByGenre(@PathVariable int genreId,
-                                        @RequestParam(name = "sort", required = false) String sortBy,
-                                        @RequestParam(name = "order", required = false) String sortOrder) {
-        Map<String, Object> requestParams = new HashMap<>();
-        requestParams.put("genreId", genreId);
-        requestParams.put("sortBy", sortBy);
-        requestParams.put("sortOrder", sortOrder);
-
-        return movieService.getByGenre(requestParams);
+                                        RequestParameters requestParameters) {
+        return movieService.getByGenre(genreId, requestParameters);
     }
 }
