@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/root-context.xml"})
+@ContextConfiguration(locations = {"classpath:root-context.xml"})
 public class JdbcMovieDaoTest {
     @Autowired
     private MovieDao movieDao;
