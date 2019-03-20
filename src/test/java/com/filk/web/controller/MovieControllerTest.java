@@ -1,6 +1,7 @@
 package com.filk.web.controller;
 
 import com.filk.entity.Movie;
+import com.filk.entity.RequestParameters;
 import com.filk.service.MovieService;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +32,7 @@ public class MovieControllerTest {
 
     @Before
     public void setup() throws Exception {
+        reset(movieServiceMock);
         MovieController movieController = new MovieController(movieServiceMock);
 
         this.mockMvc = standaloneSetup(movieController)
@@ -67,7 +69,8 @@ public class MovieControllerTest {
 
     @Test
     public void getAllMoviesJson() throws Exception {
-        when(movieServiceMock.getAll()).thenReturn(movies);
+        RequestParameters requestParameters = new RequestParameters();
+        when(movieServiceMock.getAll(requestParameters)).thenReturn(movies);
 
         mockMvc.perform(get("/movie"))
                 .andDo(print())
@@ -89,7 +92,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].rating", is(9.0)))
                 .andExpect(jsonPath("$[1].price", is(13.0)));
 
-        verify(movieServiceMock, times(1)).getAll();
+        verify(movieServiceMock, times(1)).getAll(requestParameters);
         verifyNoMoreInteractions(movieServiceMock);
     }
 
@@ -123,7 +126,10 @@ public class MovieControllerTest {
 
     @Test
     public void getMoviesByGenreJson() throws Exception {
-        when(movieServiceMock.getByGenre(3)).thenReturn(movies);
+        int genreId = 3;
+        RequestParameters requestParameters = new RequestParameters();
+
+        when(movieServiceMock.getByGenre(genreId, requestParameters)).thenReturn(movies);
 
         mockMvc.perform(get("/movie/genre/3"))
                 .andDo(print())
@@ -145,7 +151,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].rating", is(9.0)))
                 .andExpect(jsonPath("$[1].price", is(13.0)));
 
-        verify(movieServiceMock, times(1)).getByGenre(3);
+        verify(movieServiceMock, times(1)).getByGenre(genreId, requestParameters);
         verifyNoMoreInteractions(movieServiceMock);
     }
 }

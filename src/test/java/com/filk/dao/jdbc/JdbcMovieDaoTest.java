@@ -2,6 +2,7 @@ package com.filk.dao.jdbc;
 
 import com.filk.dao.MovieDao;
 import com.filk.entity.Movie;
+import com.filk.entity.RequestParameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,14 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/root-context.xml"})
+@ContextConfiguration(locations = {"classpath:root-context.xml"})
 public class JdbcMovieDaoTest {
     @Autowired
     private MovieDao movieDao;
 
     @Test
     public void getAll() {
-        List<Movie> movies = movieDao.getAll();
+        List<Movie> movies = movieDao.getAll(new RequestParameters());
 
         assertNotNull(movies);
         assertEquals(25, movies.size());
@@ -56,41 +57,171 @@ public class JdbcMovieDaoTest {
         assertEquals(170.00, checkMovie.getPrice(), 0.01);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void getAllSortByRatingAsc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("rating");
+        requestParameters.setSortOrder("asc");
+
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
+    }
+
+    @Test
+    public void getAllSortByRatingDesc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("rating");
+        requestParameters.setSortOrder("desc");
+
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Побег из Шоушенка", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByRatingDefault() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("rating");
+
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Побег из Шоушенка", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByPriceAsc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("price");
+        requestParameters.setSortOrder("asc");
+
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Блеф", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByPriceDesc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("price");
+        requestParameters.setSortOrder("desc");
+
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Форрест Гамп", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getAllSortByPriceDefault() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("price");
+
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(25, movies.size());
+        assertEquals("Блеф", movies.get(0).getNameRussian());
+    }
+
     @Test
     public void getRandom() {
-        List<Movie> movies = movieDao.getRandom(3);
-
-        assertNotNull(movies);
-        assertEquals(3, movies.size());
-
-        String movieIds1 = movies.get(0).getId() + "_" + movies.get(1).getId() + "_" + movies.get(2).getId();
+        List<Movie> movies;
 
         movies = movieDao.getRandom(3);
-
         assertNotNull(movies);
         assertEquals(3, movies.size());
 
-        String movieIds2 = movies.get(0).getId() + "_" + movies.get(1).getId() + "_" + movies.get(2).getId();
-
-        assertNotEquals(movieIds1, movieIds2);
+        movies = movieDao.getRandom(7);
+        assertNotNull(movies);
+        assertEquals(7, movies.size());
     }
 
     @Test
     public void getByGenre() {
-        List<Movie> movies;
+        List<Movie> movies = movieDao.getByGenre(5, new RequestParameters());
 
-        movies = movieDao.getByGenre(1);
-        assertNotNull(movies);
-        assertEquals(16, movies.size());
-        assertEquals("Побег из Шоушенка", movies.get(0).getNameRussian());
-        assertEquals("Гладиатор", movies.get(10).getNameRussian());
-        assertEquals("Танцующий с волками", movies.get(15).getNameRussian());
-
-        movies = movieDao.getByGenre(5);
         assertNotNull(movies);
         assertEquals(3, movies.size());
         assertEquals("Форрест Гамп", movies.get(0).getNameRussian());
         assertEquals("Жизнь прекрасна", movies.get(1).getNameRussian());
         assertEquals("Титаник", movies.get(2).getNameRussian());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getByGenreSortByRatingAsc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("rating");
+        requestParameters.setSortOrder("asc");
+
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
+    }
+
+    @Test
+    public void getByGenreSortByRatingDesc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("rating");
+        requestParameters.setSortOrder("desc");
+
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByRatingDefault() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("rating");
+
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByPriceAsc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("price");
+        requestParameters.setSortOrder("asc");
+
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByPriceDesc() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("price");
+        requestParameters.setSortOrder("desc");
+
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Темный рыцарь", movies.get(0).getNameRussian());
+    }
+
+    @Test
+    public void getByGenreSortByPriceDefault() {
+        RequestParameters requestParameters = new RequestParameters();
+        requestParameters.setSortBy("price");
+
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
+
+        assertNotNull(movies);
+        assertEquals(5, movies.size());
+        assertEquals("Начало", movies.get(0).getNameRussian());
     }
 }
