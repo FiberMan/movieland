@@ -13,9 +13,9 @@ import java.util.List;
 
 @Repository
 public class JdbcMovieDao implements MovieDao {
-    private final String GET_ALL_MOVIES = "SELECT movie_id, name, name_original, year, country, description, poster_url, rating, price FROM movie";
-    private final String GET_RANDOM_MOVIES = "SELECT movie_id, name, name_original, year, country, description, poster_url, rating, price FROM movie order by random() limit ?";
-    private final String GET_MOVIES_BY_GENRE = "SELECT m.movie_id, name, name_original, year, country, description, poster_url, rating, price \n" +
+    private final String GET_ALL_MOVIES = "SELECT movie_id, name, name_original, year, description, poster_url, rating, price FROM movie";
+    private final String GET_RANDOM_MOVIES = "SELECT movie_id, name, name_original, year, description, poster_url, rating, price FROM movie order by random() limit ?";
+    private final String GET_MOVIES_BY_GENRE = "SELECT m.movie_id, name, name_original, year, description, poster_url, rating, price \n" +
             "FROM movie m, movie_genre mg\n" +
             "WHERE m.movie_id = mg.movie_id AND mg.genre_id = ?";
 

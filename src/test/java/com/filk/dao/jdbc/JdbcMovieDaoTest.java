@@ -32,7 +32,6 @@ public class JdbcMovieDaoTest {
         assertEquals("Побег из Шоушенка", checkMovie.getNameRussian());
         assertEquals("The Shawshank Redemption", checkMovie.getNameNative());
         assertEquals("1994", checkMovie.getYearOfRelease());
-        assertEquals("США", checkMovie.getCountry());
         assertEquals("Успешный банкир Энди Дюфрейн обвинен в убийстве собственной жены и ее любовника. Оказавшись в " +
                 "тюрьме под названием Шоушенк, он сталкивается с жестокостью и беззаконием, царящими по обе стороны решетки. " +
                 "Каждый, кто попадает в эти стены, становится их рабом до конца жизни. Но Энди, вооруженный живым умом и доброй душой, " +
@@ -47,7 +46,6 @@ public class JdbcMovieDaoTest {
         assertEquals("Джанго освобожденный", checkMovie.getNameRussian());
         assertEquals("Django Unchained", checkMovie.getNameNative());
         assertEquals("2012", checkMovie.getYearOfRelease());
-        assertEquals("США", checkMovie.getCountry());
         assertEquals("Эксцентричный охотник за головами, также известный как «Дантист», промышляет отстрелом самых опасных преступников. " +
                 "Работенка пыльная, и без надежного помощника ему не обойтись. Но как найти такого и желательно не очень дорогого? " +
                 "Беглый раб по имени Джанго — прекрасная кандидатура. Правда, у нового помощника свои мотивы — " +

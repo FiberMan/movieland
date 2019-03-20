@@ -21,7 +21,6 @@ public class MovieRowMapperTest {
         when(resultSetMock.getString("name")).thenReturn("Кино");
         when(resultSetMock.getString("name_original")).thenReturn("Movie");
         when(resultSetMock.getString("year")).thenReturn("2020");
-        when(resultSetMock.getString("country")).thenReturn("Ukraine");
         when(resultSetMock.getString("description")).thenReturn("Самое лучшее кино");
         when(resultSetMock.getString("poster_url")).thenReturn("https://url.to.poster.com/p.jpg");
         when(resultSetMock.getDouble("rating")).thenReturn(9.33);
@@ -34,7 +33,6 @@ public class MovieRowMapperTest {
         assertEquals("Кино", movie.getNameRussian());
         assertEquals("Movie", movie.getNameNative());
         assertEquals("2020", movie.getYearOfRelease());
-        assertEquals("Ukraine", movie.getCountry());
         assertEquals("Самое лучшее кино", movie.getDescription());
         assertEquals("https://url.to.poster.com/p.jpg", movie.getPicturePath());
         assertEquals(9.33, movie.getRating(), 0.01);
