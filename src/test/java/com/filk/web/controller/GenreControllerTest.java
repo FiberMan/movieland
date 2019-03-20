@@ -41,13 +41,9 @@ public class GenreControllerTest {
                 .alwaysExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .build();
 
-        Genre genre1 = new Genre();
-        genre1.setId(1);
-        genre1.setName("фантастика");
+        Genre genre1 = new Genre(1, "фантастика");
 
-        Genre genre2 = new Genre();
-        genre2.setId(2);
-        genre2.setName("приключения");
+        Genre genre2 = new Genre(2, "приключения");
 
         genres.add(genre1);
         genres.add(genre2);

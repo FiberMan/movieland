@@ -12,6 +12,9 @@ db:
 movie:
   randomCount: 3
 
+genre:
+  cacheUpdatePeriod: 14400000 # 4 * 60 * 60 * 1000 = 4 hours
+
 logger:
   fileName: movieland
   logLevelFile: DEBUG

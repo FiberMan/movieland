@@ -1,11 +1,12 @@
 package com.filk.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
+
+@RequiredArgsConstructor
+@Getter
+@ToString
+@EqualsAndHashCode
 public class Genre {
     @NonNull
     private int id;
