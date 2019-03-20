@@ -24,7 +24,7 @@ public class MovieController {
 
     @GetMapping
     public List<Movie> getAllMovies(RequestParameters requestParameters) {
-        return movieService.getAll(requestParameters);
+        return movieService.getAll(requestParameters.postProcess());
     }
 
     @GetMapping("/random")
@@ -35,6 +35,6 @@ public class MovieController {
     @GetMapping("/genre/{genreId}")
     public List<Movie> getMoviesByGenre(@PathVariable int genreId,
                                         RequestParameters requestParameters) {
-        return movieService.getByGenre(genreId, requestParameters);
+        return movieService.getByGenre(genreId, requestParameters.postProcess());
     }
 }

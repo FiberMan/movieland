@@ -21,14 +21,10 @@ public class RequestParameters {
 
     public void setSortBy(String sortBy) {
         this.sortBy = SortBy.valueOf(sortBy.toUpperCase());
-        validate();
-        setDefaults();
     }
 
     public void setSortOrder(String sortOrder) {
         this.sortOrder = SortOrder.valueOf(sortOrder.toUpperCase());
-        validate();
-        setDefaults();
     }
 
     private void validate() {
@@ -44,6 +40,13 @@ public class RequestParameters {
         if(sortBy == SortBy.PRICE && sortOrder == null) {
             sortOrder = SortOrder.ASC;
         }
+    }
+
+    public RequestParameters postProcess(){
+        validate();
+        setDefaults();
+
+        return this;
     }
 
     @Override

@@ -63,7 +63,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("rating");
         requestParameters.setSortOrder("asc");
 
-        List<Movie> movies = movieDao.getAll(requestParameters);
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("rating");
         requestParameters.setSortOrder("desc");
 
-        List<Movie> movies = movieDao.getAll(requestParameters);
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(25, movies.size());
@@ -84,7 +84,7 @@ public class JdbcMovieDaoTest {
         RequestParameters requestParameters = new RequestParameters();
         requestParameters.setSortBy("rating");
 
-        List<Movie> movies = movieDao.getAll(requestParameters);
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(25, movies.size());
@@ -97,7 +97,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("price");
         requestParameters.setSortOrder("asc");
 
-        List<Movie> movies = movieDao.getAll(requestParameters);
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(25, movies.size());
@@ -110,7 +110,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("price");
         requestParameters.setSortOrder("desc");
 
-        List<Movie> movies = movieDao.getAll(requestParameters);
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(25, movies.size());
@@ -122,7 +122,7 @@ public class JdbcMovieDaoTest {
         RequestParameters requestParameters = new RequestParameters();
         requestParameters.setSortBy("price");
 
-        List<Movie> movies = movieDao.getAll(requestParameters);
+        List<Movie> movies = movieDao.getAll(requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(25, movies.size());
@@ -159,7 +159,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("rating");
         requestParameters.setSortOrder("asc");
 
-        List<Movie> movies = movieDao.getByGenre(9, requestParameters);
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
     }
 
     @Test
@@ -168,7 +168,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("rating");
         requestParameters.setSortOrder("desc");
 
-        List<Movie> movies = movieDao.getByGenre(9, requestParameters);
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(5, movies.size());
@@ -180,7 +180,7 @@ public class JdbcMovieDaoTest {
         RequestParameters requestParameters = new RequestParameters();
         requestParameters.setSortBy("rating");
 
-        List<Movie> movies = movieDao.getByGenre(9, requestParameters);
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(5, movies.size());
@@ -193,7 +193,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("price");
         requestParameters.setSortOrder("asc");
 
-        List<Movie> movies = movieDao.getByGenre(9, requestParameters);
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(5, movies.size());
@@ -206,7 +206,7 @@ public class JdbcMovieDaoTest {
         requestParameters.setSortBy("price");
         requestParameters.setSortOrder("desc");
 
-        List<Movie> movies = movieDao.getByGenre(9, requestParameters);
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(5, movies.size());
@@ -218,7 +218,7 @@ public class JdbcMovieDaoTest {
         RequestParameters requestParameters = new RequestParameters();
         requestParameters.setSortBy("price");
 
-        List<Movie> movies = movieDao.getByGenre(9, requestParameters);
+        List<Movie> movies = movieDao.getByGenre(9, requestParameters.postProcess());
 
         assertNotNull(movies);
         assertEquals(5, movies.size());
