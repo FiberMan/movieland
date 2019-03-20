@@ -14,7 +14,8 @@
         <context:exclude-filter type="regex" expression="com\.filk\.web\..*"/>
     </context:component-scan>
 
-    <task:annotation-driven/>
+    <task:annotation-driven scheduler="taskScheduler"/>
+    <task:scheduler id="taskScheduler" pool-size="5"/>
 
     <bean id="properties" class="org.springframework.beans.factory.config.YamlPropertiesFactoryBean">
         <property name="resources" value="classpath:application.yml"/>
