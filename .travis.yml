@@ -3,8 +3,9 @@ jdk:
   - oraclejdk8
 
 script:
-  - "mvn cobertura:cobertura"
+  - "mvn checkstyle:checkstyle"
   - "mvn findbugs:findbugs"
+  - "mvn cobertura:cobertura"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
