@@ -73,11 +73,11 @@
                         <configuration>
                             <encoding>UTF-8</encoding>
                             <consoleOutput>true</consoleOutput>
-                            <failsOnError>true</failsOnError>
+                            <failsOnError>false</failsOnError>
                             <linkXRef>false</linkXRef>
                         </configuration>
                         <goals>
-                            <goal>check</goal>
+                            <goal>checkstyle</goal>
                         </goals>
                     </execution>
                 </executions>
