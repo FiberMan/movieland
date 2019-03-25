@@ -3,7 +3,7 @@
 db:
   jdbc:
     driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:myDb;INIT=runscript from 'classpath:db/create_db.sql'\;runscript from 'classpath:db/populate_db.sql';DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:myDb;INIT=runscript from 'classpath:db/create_db.sql'\;runscript from 'classpath:db/populate_db.sql';DB_CLOSE_DELAY=-1;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE
     username: postgres
     password: root
     initialSize: 4

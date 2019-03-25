@@ -2,14 +2,15 @@ package com.filk.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.filk.view.Views;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-
+@Data
+@NoArgsConstructor
 @RequiredArgsConstructor
-@Getter
-@ToString
-@EqualsAndHashCode
-public class Genre {
+public class Country {
     @NonNull
     @JsonView(Views.Base.class)
     private int id;
