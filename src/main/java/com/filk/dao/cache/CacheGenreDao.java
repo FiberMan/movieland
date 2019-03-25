@@ -29,6 +29,11 @@ public class CacheGenreDao implements GenreDao {
         return new ArrayList<>(genresCache);
     }
 
+    @Override
+    public List<Genre> getByMovieId(int movieId) {
+        return genreDao.getByMovieId(movieId);
+    }
+
     @PostConstruct
     @Scheduled(fixedDelayString = "${genre.cacheUpdatePeriod}", initialDelayString = "${genre.cacheUpdatePeriod}")
     public void refreshGenresCache() {

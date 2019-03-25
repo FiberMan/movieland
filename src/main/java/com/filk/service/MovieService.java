@@ -9,4 +9,5 @@ public interface MovieService {
     List<Movie> getAll(RequestParameters requestParameters);
     List<Movie> getRandom();
     List<Movie> getByGenre(int genreId, RequestParameters requestParameters);
+    Movie getById(int movieId);
 }
