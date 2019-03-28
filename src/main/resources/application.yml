@@ -15,6 +15,10 @@ movie:
 genre:
   cacheUpdatePeriod: 14400000 # 4 * 60 * 60 * 1000 = 4 hours
 
+currency:
+  ratesUpdateCron: 0 0 17 * * * # On 17:00 each day
+  ratesUrl: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json&date=%s
+
 logger:
   fileName: movieland
   logLevelFile: DEBUG

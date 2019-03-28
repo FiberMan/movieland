@@ -2,7 +2,7 @@ package com.filk.dao.jdbc;
 
 import com.filk.dao.MovieDao;
 import com.filk.entity.Movie;
-import com.filk.entity.RequestParameters;
+import com.filk.util.RequestParameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

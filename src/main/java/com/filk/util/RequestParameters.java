@@ -1,4 +1,4 @@
-package com.filk.entity;
+package com.filk.util;
 
 import lombok.Getter;
 
@@ -8,6 +8,7 @@ import java.util.Objects;
 public class RequestParameters {
     private SortBy sortBy;
     private SortOrder sortOrder;
+    private CurrencyCode currency;
 
     public enum SortBy {
         RATING,
@@ -27,6 +28,10 @@ public class RequestParameters {
         this.sortOrder = SortOrder.valueOf(sortOrder.toUpperCase());
     }
 
+    public void setCurrency(String currency) {
+        this.currency = CurrencyCode.valueOf(currency.toUpperCase());
+    }
+
     private void validate() {
         if(sortBy == SortBy.RATING && sortOrder == SortOrder.ASC) {
             throw new IllegalArgumentException("Sort by rating ASC is not supported.");
@@ -39,6 +44,9 @@ public class RequestParameters {
         }
         if(sortBy == SortBy.PRICE && sortOrder == null) {
             sortOrder = SortOrder.ASC;
+        }
+        if(currency == null) {
+            currency = CurrencyCode.UAH;
         }
     }
 

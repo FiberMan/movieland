@@ -3,7 +3,7 @@ package com.filk.dao.jdbc;
 import com.filk.dao.MovieDao;
 import com.filk.dao.jdbc.mapper.MovieRowMapper;
 import com.filk.entity.Movie;
-import com.filk.entity.RequestParameters;
+import com.filk.util.RequestParameters;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
