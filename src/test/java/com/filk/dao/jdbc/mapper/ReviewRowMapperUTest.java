@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ReviewRowMapperTest {
+public class ReviewRowMapperUTest {
 
     @Test
     public void mapRow() throws SQLException {

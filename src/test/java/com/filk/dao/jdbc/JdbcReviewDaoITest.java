@@ -1,5 +1,6 @@
 package com.filk.dao.jdbc;
 
+import com.filk.config.AppConfig;
 import com.filk.dao.ReviewDao;
 import com.filk.entity.Review;
 import org.junit.Test;
@@ -7,14 +8,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:root-context.xml"})
-public class JdbcReviewDaoTest {
+@WebAppConfiguration
+@ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigWebContextLoader.class)
+public class JdbcReviewDaoITest {
 
     @Autowired
     private ReviewDao reviewDao;

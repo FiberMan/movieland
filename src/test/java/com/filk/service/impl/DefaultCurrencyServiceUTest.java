@@ -17,7 +17,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DefaultCurrencyServiceTest {
+public class DefaultCurrencyServiceUTest {
 
     @Test
     public void convert() throws IOException, NoSuchFieldException, IllegalAccessException {

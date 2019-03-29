@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MovieRowMapperTest {
+public class MovieRowMapperUTest {
 
     @Test
     public void mapRowTest() throws SQLException {
