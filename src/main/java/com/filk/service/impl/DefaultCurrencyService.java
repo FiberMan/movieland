@@ -1,7 +1,5 @@
 package com.filk.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filk.dto.CurrencyRateNbuDto;
 import com.filk.util.CurrencyCode;
 import com.filk.service.CurrencyService;
@@ -10,69 +8,93 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 @Slf4j
 public class DefaultCurrencyService implements CurrencyService {
-    @Value("${currency.ratesUrl}")
     private String currencyRatesUrl;
     private CurrencyCode defaultCurrency = CurrencyCode.UAH;
-    private volatile Map<CurrencyCode, Double> currencyRatesCache = new HashMap<>();
-    private ObjectMapper objectMapper;
+    private Map<CurrencyCode, Double> currencyRatesCache = new HashMap<>();
+    private RestTemplate restTemplate;
+    private ReentrantLock lock;
+
+    @Value("${currency.ratesUrl}")
+    public void setCurrencyRatesUrl(String currencyRatesUrl) {
+        this.currencyRatesUrl = currencyRatesUrl;
+    }
 
     @Autowired
-    public DefaultCurrencyService(ObjectMapper objectMapper) {
-        this.objectMapper = objectMapper;
+    public DefaultCurrencyService(RestTemplate restTemplate, ReentrantLock lock) {
+        this.restTemplate = restTemplate;
+        this.lock = lock;
     }
 
     @Override
-    public double convert(double amount, CurrencyCode currencyCode) {
-        return BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(currencyRatesCache.get(currencyCode)), 2, RoundingMode.HALF_UP).doubleValue();
+    public double convert(double price, CurrencyCode currencyCode) {
+        try {
+            lock.lock();
+            BigDecimal rate = BigDecimal.valueOf(currencyRatesCache.get(currencyCode));
+            BigDecimal amount = BigDecimal.valueOf(price);
+            BigDecimal result = amount.divide(rate, 2, RoundingMode.HALF_UP);
+            return result.doubleValue();
+        } finally {
+            lock.unlock();
+        }
+
     }
 
     @PostConstruct
     @Scheduled(cron = "${currency.ratesUpdateCron}")
     public void refreshCurrencyPrice() {
-        List<CurrencyRateNbuDto> currencies;
         String formattedDate = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String requestUrl = String.format(currencyRatesUrl, formattedDate);
 
+        CurrencyRateNbuDto[] rates = restTemplate.getForObject(requestUrl, CurrencyRateNbuDto[].class);
+
         try {
-            currencies = objectMapper.readValue(new URL(requestUrl), new TypeReference<List<CurrencyRateNbuDto>>() {
-            });
-        } catch (IOException e) {
-            log.info("Not able to get currency rate list from {}", requestUrl);
-            return;
-        }
+            lock.lock();
 
-        Map<CurrencyCode, Double> currencyRates = new HashMap<>();
-        currencyRates.put(defaultCurrency, 1.0);
+            List<String> unprocessedCodes = CurrencyCode.getStringList();
+            unprocessedCodes.remove(defaultCurrency.toString());
+            currencyRatesCache.put(defaultCurrency, 1.0);
 
-        for (CurrencyRateNbuDto currency : currencies) {
-            try {
-                currencyRates.put(CurrencyCode.valueOf(currency.getCurrencyCode()), currency.getRate());
-            } catch (IllegalArgumentException ignored) {
+            if (rates == null) {
+                terminateIfEmptyCache("Not able to get currency rate list from {}", requestUrl);
             }
+
+            for (CurrencyRateNbuDto rate : rates) {
+                if (CurrencyCode.contains(rate.getCurrencyCode())) {
+                    currencyRatesCache.put(CurrencyCode.valueOf(rate.getCurrencyCode()), rate.getRate());
+                    unprocessedCodes.remove(rate.getCurrencyCode());
+                }
+            }
+
+            if (!unprocessedCodes.isEmpty()) {
+                terminateIfEmptyCache("Some currency rates have not been loaded {}", unprocessedCodes.toString());
+            }
+
+            log.info("Currency rates has been successfully refreshed.");
+        } finally {
+            lock.unlock();
         }
+    }
 
-        if (currencyRates.size() != CurrencyCode.values().length) {
-            log.info("Some currency rates have not been loaded.");
-            return;
+    private void terminateIfEmptyCache(String logMessage, String logParam) {
+        log.error(logMessage, logParam);
+
+        if (currencyRatesCache.isEmpty()) {
+            throw new RuntimeException("Not able to get currency rate list from URL");
+        } else {
+            log.info("Continue using cached currency rates.");
         }
-
-        currencyRatesCache = currencyRates;
-
-        log.info("Currency rates has been successfully refreshed.");
     }
 }

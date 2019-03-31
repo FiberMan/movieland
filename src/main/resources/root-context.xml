@@ -36,5 +36,6 @@
         <property name="maxTotal" value="${db.jdbc.maxTotal}"/>
     </bean>
 
-    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+    <bean id="reentrantLock" class="java.util.concurrent.locks.ReentrantLock"/>
 </beans>
