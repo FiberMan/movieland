@@ -1,6 +1,5 @@
 package com.filk.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
@@ -14,9 +13,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Configuration
 @ComponentScan(basePackages = "com.filk", excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.filk.web.*"))
@@ -47,8 +48,13 @@ public class AppConfig implements SchedulingConfigurer {
     }
 
     @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public ReentrantLock reentrantLock() {
+        return new ReentrantLock();
     }
 
     @Bean

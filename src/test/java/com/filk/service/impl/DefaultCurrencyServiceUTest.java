@@ -1,16 +1,11 @@
 package com.filk.service.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filk.dto.CurrencyRateNbuDto;
 import com.filk.util.CurrencyCode;
 import org.junit.Test;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -20,20 +15,17 @@ import static org.mockito.Mockito.when;
 public class DefaultCurrencyServiceUTest {
 
     @Test
-    public void convert() throws IOException, NoSuchFieldException, IllegalAccessException {
-        ObjectMapper objectMapperMock = mock(ObjectMapper.class);
-        DefaultCurrencyService defaultCurrencyService = new DefaultCurrencyService(objectMapperMock);
+    public void convert() {
+        RestTemplate restTemplateMock = mock(RestTemplate.class);
+        DefaultCurrencyService defaultCurrencyService = new DefaultCurrencyService(restTemplateMock, new ReentrantLock());
 
-        Field currencyRatesUrl = defaultCurrencyService.getClass().getDeclaredField("currencyRatesUrl");
-        currencyRatesUrl.setAccessible(true);
-        currencyRatesUrl.set(defaultCurrencyService, "https://bank.gov.ua");
-        currencyRatesUrl.setAccessible(false);
+        defaultCurrencyService.setCurrencyRatesUrl("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json&date=%s");
 
-        List<CurrencyRateNbuDto> currencyRates = new ArrayList<>();
-        currencyRates.add(new CurrencyRateNbuDto("USD", 27.5));
-        currencyRates.add(new CurrencyRateNbuDto("EUR", 31.2));
+        CurrencyRateNbuDto[] currencyRates = new CurrencyRateNbuDto[2];
+        currencyRates[0] = new CurrencyRateNbuDto("USD", 27.5);
+        currencyRates[1] = new CurrencyRateNbuDto("EUR", 31.2);
 
-        when(objectMapperMock.readValue(any(URL.class), any(TypeReference.class))).thenReturn(currencyRates);
+        when(restTemplateMock.getForObject(any(String.class), any(Class.class))).thenReturn(currencyRates);
 
         defaultCurrencyService.refreshCurrencyPrice();
 
