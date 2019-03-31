@@ -13,8 +13,9 @@ import java.util.List;
 @Repository
 @Slf4j
 public class JdbcCountryDao implements CountryDao {
-    private static final String GET_REVIEWS_BY_MOVIE_ID = "SELECT c.country_id, c.name FROM movie_country mc, country c " +
+    private static final String GET_COUNTRIES_BY_MOVIE_ID = "SELECT c.country_id, c.name FROM movie_country mc, country c " +
             "WHERE mc.country_id = c.country_id AND mc.movie_id = ?";
+    private static final String GET_ALL_COUNTRIES = "SELECT country_id, name FROM country";
 
     private JdbcTemplate jdbcTemplate;
     private CountryRowMapper countryRowMapper = new CountryRowMapper();
@@ -25,8 +26,14 @@ public class JdbcCountryDao implements CountryDao {
     }
 
     @Override
+    public List<Country> getAll() {
+        log.debug("Getting all countries");
+        return jdbcTemplate.query(GET_ALL_COUNTRIES, countryRowMapper);
+    }
+
+    @Override
     public List<Country> getByMovieId(int movieId) {
         log.debug("Getting countries for movie ID: {}", movieId);
-        return jdbcTemplate.query(GET_REVIEWS_BY_MOVIE_ID, countryRowMapper, movieId);
+        return jdbcTemplate.query(GET_COUNTRIES_BY_MOVIE_ID, countryRowMapper, movieId);
     }
 }

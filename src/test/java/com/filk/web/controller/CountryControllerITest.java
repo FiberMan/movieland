@@ -1,8 +1,8 @@
 package com.filk.web.controller;
 
 import com.filk.config.AppConfig;
-import com.filk.entity.Genre;
-import com.filk.service.GenreService;
+import com.filk.entity.Country;
+import com.filk.service.CountryService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,43 +28,40 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigWebContextLoader.class)
-public class GenreControllerITest {
+public class CountryControllerITest {
     private MockMvc mockMvc;
-    private GenreService genreServiceMock = mock(GenreService.class);
-    private List<Genre> genres = new ArrayList<>();
+    private CountryService countryServiceMock = mock(CountryService.class);
+    private List<Country> countries = new ArrayList<>();
 
     @Before
     public void setup() {
-        GenreController genreController = new GenreController(genreServiceMock);
+        CountryController countryController = new CountryController(countryServiceMock);
 
-        this.mockMvc = standaloneSetup(genreController)
+        mockMvc = standaloneSetup(countryController)
                 .defaultRequest(get("/").accept(MediaType.APPLICATION_JSON_UTF8))
                 .alwaysExpect(status().isOk())
                 .alwaysExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .build();
 
-        Genre genre1 = new Genre(1, "фантастика");
-        Genre genre2 = new Genre(2, "приключения");
-
-        genres.add(genre1);
-        genres.add(genre2);
+        countries.add(new Country(1, "Україна"));
+        countries.add(new Country(2, "Мувіляндія"));
     }
 
     @Test
-    public void getAllGenresJson () throws Exception {
-        when(genreServiceMock.getAll()).thenReturn(genres);
+    public void getAllCountries() throws Exception {
+        when(countryServiceMock.getAll()).thenReturn(countries);
 
-        mockMvc.perform(get("/genre"))
+        mockMvc.perform(get("/country"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].name", is("фантастика")))
+                .andExpect(jsonPath("$[0].name", is("Україна")))
 
                 .andExpect(jsonPath("$[1].id", is(2)))
-                .andExpect(jsonPath("$[1].name", is("приключения")));
+                .andExpect(jsonPath("$[1].name", is("Мувіляндія")));
 
-        verify(genreServiceMock, times(1)).getAll();
-        verifyNoMoreInteractions(genreServiceMock);
+        verify(countryServiceMock, times(1)).getAll();
+        verifyNoMoreInteractions(countryServiceMock);
     }
 }
