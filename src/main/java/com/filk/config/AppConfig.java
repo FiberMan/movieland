@@ -15,28 +15,15 @@ import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.concurrent.Executor;
+import javax.sql.DataSource;
 import java.util.concurrent.Executors;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ScheduledExecutorService;
 
 @Configuration
 @ComponentScan(basePackages = "com.filk", excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com.filk.web.*"))
 @EnableScheduling
 public class AppConfig implements SchedulingConfigurer {
     private static final String RESOURCES_PATH = "application.yml";
-
-    @Value("${db.jdbc.driverClassName}")
-    private String driverClassName;
-    @Value("${db.jdbc.url}")
-    private String url;
-    @Value("${db.jdbc.username}")
-    private String username;
-    @Value("${db.jdbc.password}")
-    private String password;
-    @Value("${db.jdbc.initialSize}")
-    private int initialSize;
-    @Value("${db.jdbc.maxTotal}")
-    private int maxTotal;
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer properties() {
@@ -53,12 +40,14 @@ public class AppConfig implements SchedulingConfigurer {
     }
 
     @Bean
-    public ReentrantLock reentrantLock() {
-        return new ReentrantLock();
-    }
-
-    @Bean
-    public BasicDataSource dataSource() {
+    public BasicDataSource dataSource(
+            @Value("${db.jdbc.driverClassName}") String driverClassName,
+            @Value("${db.jdbc.url}") String url,
+            @Value("${db.jdbc.username}") String username,
+            @Value("${db.jdbc.password}") String password,
+            @Value("${db.jdbc.initialSize}") int initialSize,
+            @Value("${db.jdbc.maxTotal}") int maxTotal
+    ) {
         BasicDataSource basicDataSource = new BasicDataSource();
 
         basicDataSource.setDriverClassName(driverClassName);
@@ -72,12 +61,12 @@ public class AppConfig implements SchedulingConfigurer {
     }
 
     @Bean
-    public JdbcTemplate jdbcTemplate() {
-        return new JdbcTemplate(dataSource());
+    public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        return new JdbcTemplate(dataSource);
     }
 
-    @Bean(destroyMethod="shutdown")
-    public Executor taskExecutor() {
+    @Bean(destroyMethod = "shutdown")
+    public ScheduledExecutorService taskExecutor() {
         return Executors.newScheduledThreadPool(10);
     }
 
