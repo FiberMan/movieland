@@ -35,4 +35,6 @@
         <property name="initialSize" value="${db.jdbc.initialSize}"/>
         <property name="maxTotal" value="${db.jdbc.maxTotal}"/>
     </bean>
+
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 </beans>

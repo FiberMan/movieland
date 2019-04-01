@@ -2,6 +2,7 @@ package com.filk.web.controller;
 
 import com.filk.entity.*;
 import com.filk.service.MovieService;
+import com.filk.util.RequestParameters;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -171,7 +172,7 @@ public class MovieControllerTest {
 
     @Test
     public void getMovieByIdJson() throws Exception {
-        when(movieServiceMock.getById(33)).thenReturn(movies.get(0));
+        when(movieServiceMock.getById(33, new RequestParameters())).thenReturn(movies.get(0));
 
         mockMvc.perform(get("/movie/33"))
                 .andDo(print())

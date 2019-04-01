@@ -2,7 +2,8 @@ package com.filk.service.impl;
 
 import com.filk.dao.MovieDao;
 import com.filk.entity.Movie;
-import com.filk.entity.RequestParameters;
+import com.filk.util.RequestParameters;
+import com.filk.service.CurrencyService;
 import com.filk.service.MovieEnrichmentService;
 import com.filk.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,16 @@ import java.util.List;
 public class DefaultMovieService implements MovieService {
     private MovieDao movieDao;
     private MovieEnrichmentService movieEnrichmentService;
+    private CurrencyService currencyService;
 
     @Value("${movie.randomCount}")
     private int randomCount;
 
     @Autowired
-    public DefaultMovieService(MovieDao movieDao, MovieEnrichmentService movieEnrichmentService) {
+    public DefaultMovieService(MovieDao movieDao, MovieEnrichmentService movieEnrichmentService, CurrencyService currencyService) {
         this.movieDao = movieDao;
         this.movieEnrichmentService = movieEnrichmentService;
+        this.currencyService = currencyService;
     }
 
     @Override
@@ -41,9 +44,11 @@ public class DefaultMovieService implements MovieService {
     }
 
     @Override
-    public Movie getById(int movieId) {
+    public Movie getById(int movieId, RequestParameters requestParameters) {
         Movie movie = movieDao.getById(movieId);
         movieEnrichmentService.enrich(movie);
+
+        movie.setPrice(currencyService.convert(movie.getPrice(), requestParameters.getCurrency()));
 
         return movie;
     }

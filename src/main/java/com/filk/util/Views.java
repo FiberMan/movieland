@@ -1,4 +1,4 @@
-package com.filk.view;
+package com.filk.util;
 
 public class Views {
     public static class Base {

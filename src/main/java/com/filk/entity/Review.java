@@ -1,7 +1,7 @@
 package com.filk.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.filk.view.Views;
+import com.filk.util.Views;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

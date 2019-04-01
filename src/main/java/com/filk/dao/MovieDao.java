@@ -1,7 +1,7 @@
 package com.filk.dao;
 
 import com.filk.entity.Movie;
-import com.filk.entity.RequestParameters;
+import com.filk.util.RequestParameters;
 
 import java.util.List;
 

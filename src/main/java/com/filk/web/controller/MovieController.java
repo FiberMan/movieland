@@ -3,9 +3,9 @@ package com.filk.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.filk.entity.Movie;
 
-import com.filk.entity.RequestParameters;
+import com.filk.util.RequestParameters;
 import com.filk.service.MovieService;
-import com.filk.view.Views;
+import com.filk.util.Views;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +45,8 @@ public class MovieController {
 
     @GetMapping("{movieId}")
     @JsonView(Views.MovieDetail.class)
-    public Movie getMovieById(@PathVariable int movieId) {
-        return movieService.getById(movieId);
+    public Movie getMovieById(@PathVariable int movieId,
+                              RequestParameters requestParameters) {
+        return movieService.getById(movieId, requestParameters.postProcess());
     }
 }
