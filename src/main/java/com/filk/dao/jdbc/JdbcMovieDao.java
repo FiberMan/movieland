@@ -20,7 +20,7 @@ public class JdbcMovieDao implements MovieDao {
     private final String GET_MOVIES_BY_GENRE = "SELECT m.movie_id, name, name_original, year, description, poster_url, rating, price \n" +
             "FROM movie m, movie_genre mg\n" +
             "WHERE m.movie_id = mg.movie_id AND mg.genre_id = ?";
-    private final String GET_MOVIE_BY_ID = GET_ALL_MOVIES + " WHERE movie_id = ?";
+    private final String GET_MOVIE_BY_ID = "SELECT movie_id, name, name_original, year, description, poster_url, rating, price FROM movie WHERE movie_id = ?";
 
     private final RowMapper<Movie> movieRowMapper = new MovieRowMapper();
 

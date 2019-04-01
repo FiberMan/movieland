@@ -1,9 +1,9 @@
 package com.filk.service.impl;
 
-import com.filk.dao.CountryDao;
-import com.filk.dao.GenreDao;
-import com.filk.dao.ReviewDao;
 import com.filk.entity.*;
+import com.filk.service.CountryService;
+import com.filk.service.GenreService;
+import com.filk.service.ReviewService;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -12,13 +12,13 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class DefaultMovieEnrichmentServiceTest {
+public class DefaultMovieEnrichmentServiceUTest {
 
     @Test
     public void enrich() {
-        CountryDao countryDaoMock = mock(CountryDao.class);
-        GenreDao genreDaoMock = mock(GenreDao.class);
-        ReviewDao reviewDaoMock = mock(ReviewDao.class);
+        CountryService countryServiceMock = mock(CountryService.class);
+        GenreService genreServiceMock = mock(GenreService.class);
+        ReviewService reviewServiceMock = mock(ReviewService.class);
 
         Country country1 = new Country(1, "Україна");
         Country country2 = new Country(2, "Норвегія");
@@ -35,11 +35,11 @@ public class DefaultMovieEnrichmentServiceTest {
         Movie movie = new Movie(33, "Очень Джава Кино", "Very Java Movie");
 
 
-        when(countryDaoMock.getByMovieId(33)).thenReturn(Arrays.asList(country1, country2));
-        when(genreDaoMock.getByMovieId(33)).thenReturn(Arrays.asList(genre1, genre2));
-        when(reviewDaoMock.getByMovieId(33)).thenReturn(Arrays.asList(review1, review2));
+        when(countryServiceMock.getByMovieId(33)).thenReturn(Arrays.asList(country1, country2));
+        when(genreServiceMock.getByMovieId(33)).thenReturn(Arrays.asList(genre1, genre2));
+        when(reviewServiceMock.getByMovieId(33)).thenReturn(Arrays.asList(review1, review2));
 
-        DefaultMovieEnrichmentService enrichmentService = new DefaultMovieEnrichmentService(countryDaoMock, genreDaoMock, reviewDaoMock);
+        DefaultMovieEnrichmentService enrichmentService = new DefaultMovieEnrichmentService(countryServiceMock, genreServiceMock, reviewServiceMock);
         enrichmentService.enrich(movie);
 
         assertNotNull(movie.getCountries());

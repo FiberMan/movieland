@@ -1,5 +1,6 @@
 package com.filk.dao.jdbc;
 
+import com.filk.config.AppConfig;
 import com.filk.dao.MovieDao;
 import com.filk.entity.Movie;
 import com.filk.util.RequestParameters;
@@ -8,14 +9,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:root-context.xml"})
-public class JdbcMovieDaoTest {
+@WebAppConfiguration
+@ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigWebContextLoader.class)
+public class JdbcMovieDaoITest {
     @Autowired
     private MovieDao movieDao;
 

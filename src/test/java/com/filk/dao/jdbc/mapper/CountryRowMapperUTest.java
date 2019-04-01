@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class CountryRowMapperTest {
+public class CountryRowMapperUTest {
     @Test
     public void mapRow() throws SQLException {
         ResultSet resultSet = mock(ResultSet.class);

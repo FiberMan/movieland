@@ -1,5 +1,6 @@
 package com.filk.web.controller;
 
+import com.filk.config.AppConfig;
 import com.filk.entity.*;
 import com.filk.service.MovieService;
 import com.filk.util.RequestParameters;
@@ -9,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,9 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:root-context.xml"})
 @WebAppConfiguration
-public class MovieControllerTest {
+@ContextConfiguration(classes = {AppConfig.class}, loader = AnnotationConfigWebContextLoader.class)
+public class MovieControllerITest {
     private MockMvc mockMvc;
     private MovieService movieServiceMock = mock(MovieService.class);
     private List<Movie> movies = new ArrayList<>();
