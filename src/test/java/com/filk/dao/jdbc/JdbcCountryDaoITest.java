@@ -35,4 +35,16 @@ public class JdbcCountryDaoITest {
         assertEquals(3, countries.get(1).getId());
         assertEquals("Великобритания", countries.get(1).getName());
     }
+
+    @Test
+    public void getAllCountries() {
+        List<Country> countries = countryDao.getAll();
+
+        assertNotNull(countries);
+        assertEquals(7, countries.size());
+        assertEquals(1, countries.get(0).getId());
+        assertEquals("США", countries.get(0).getName());
+        assertEquals(2, countries.get(1).getId());
+        assertEquals("Франция", countries.get(1).getName());
+    }
 }
