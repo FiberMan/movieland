@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @Service
 @Slf4j
@@ -25,29 +26,23 @@ public class DefaultCurrencyService implements CurrencyService {
     private CurrencyCode defaultCurrency = CurrencyCode.UAH;
     private Map<CurrencyCode, Double> currencyRatesCache = new HashMap<>();
     private RestTemplate restTemplate;
-    private ReentrantLock lock;
-
-    @Value("${currency.ratesUrl}")
-    public void setCurrencyRatesUrl(String currencyRatesUrl) {
-        this.currencyRatesUrl = currencyRatesUrl;
-    }
+    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     @Autowired
-    public DefaultCurrencyService(RestTemplate restTemplate, ReentrantLock lock) {
+    public DefaultCurrencyService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        this.lock = lock;
     }
 
     @Override
     public double convert(double price, CurrencyCode currencyCode) {
         try {
-            lock.lock();
+            lock.readLock().lock();
             BigDecimal rate = BigDecimal.valueOf(currencyRatesCache.get(currencyCode));
             BigDecimal amount = BigDecimal.valueOf(price);
             BigDecimal result = amount.divide(rate, 2, RoundingMode.HALF_UP);
             return result.doubleValue();
         } finally {
-            lock.unlock();
+            lock.readLock().unlock();
         }
 
     }
@@ -61,7 +56,7 @@ public class DefaultCurrencyService implements CurrencyService {
         CurrencyRateNbuDto[] rates = restTemplate.getForObject(requestUrl, CurrencyRateNbuDto[].class);
 
         try {
-            lock.lock();
+            lock.writeLock().lock();
 
             List<String> unprocessedCodes = CurrencyCode.getStringList();
             unprocessedCodes.remove(defaultCurrency.toString());
@@ -84,7 +79,7 @@ public class DefaultCurrencyService implements CurrencyService {
 
             log.info("Currency rates has been successfully refreshed.");
         } finally {
-            lock.unlock();
+            lock.writeLock().unlock();
         }
     }
 
@@ -96,5 +91,10 @@ public class DefaultCurrencyService implements CurrencyService {
         } else {
             log.info("Continue using cached currency rates.");
         }
+    }
+
+    @Value("${currency.ratesUrl}")
+    public void setCurrencyRatesUrl(String currencyRatesUrl) {
+        this.currencyRatesUrl = currencyRatesUrl;
     }
 }

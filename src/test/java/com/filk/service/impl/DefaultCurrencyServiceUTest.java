@@ -17,7 +17,7 @@ public class DefaultCurrencyServiceUTest {
     @Test
     public void convert() {
         RestTemplate restTemplateMock = mock(RestTemplate.class);
-        DefaultCurrencyService defaultCurrencyService = new DefaultCurrencyService(restTemplateMock, new ReentrantLock());
+        DefaultCurrencyService defaultCurrencyService = new DefaultCurrencyService(restTemplateMock);
 
         defaultCurrencyService.setCurrencyRatesUrl("https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json&date=%s");
 
