@@ -19,6 +19,10 @@ currency:
   ratesUpdateCron: 0 0 17 * * * # On 17:00 each day
   ratesUrl: https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json&date=%s
 
+session:
+  lifeTimeHours: 2
+  cleanupPeriod: 60000 # 60 * 1000 = 1 minute
+
 logger:
   fileName: movieland
   logLevelFile: DEBUG

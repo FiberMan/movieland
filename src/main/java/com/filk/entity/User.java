@@ -1,15 +1,13 @@
 package com.filk.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.filk.util.UserRole;
 import com.filk.util.Views;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
+@Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class User {
     @NonNull
     @JsonView(Views.Base.class)
@@ -18,4 +16,12 @@ public class User {
     @NonNull
     @JsonView(Views.Base.class)
     private String name;
+
+    private String email;
+
+    private UserRole role;
+
+    private String hash;
+
+    private String salt;
 }
