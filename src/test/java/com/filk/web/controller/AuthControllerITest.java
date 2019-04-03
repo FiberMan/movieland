@@ -1,6 +1,7 @@
 package com.filk.web.controller;
 
 import com.filk.config.AppConfig;
+import com.filk.config.RestResponseEntityExceptionHandler;
 import com.filk.service.SecurityService;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +33,7 @@ public class AuthControllerITest {
 
         mockMvc = standaloneSetup(authController)
                 .defaultRequest(get("/").accept(MediaType.APPLICATION_JSON_UTF8))
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
                 .build();
 
     }

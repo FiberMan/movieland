@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface SecurityService {
     Session login(RequestCredentials requestCredentials);
     void logout(String token);
-    Optional<Session> getValidSession(String token);
+    Optional<Session> getSession(String token);
 }

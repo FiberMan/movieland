@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -23,7 +22,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Slf4j
 public class DefaultSecurityService implements SecurityService {
     private int sessionLifeTimeHours;
-    private List<Session> sessions = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<Session> sessions = new CopyOnWriteArrayList<>();
     private UserService userService;
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -36,7 +35,7 @@ public class DefaultSecurityService implements SecurityService {
     public Session login(RequestCredentials requestCredentials) {
         User user = userService.getByEmail(requestCredentials.getEmail());
 
-        if (!passwordEncoder.matches(requestCredentials.getPassword() + user.getSalt(), user.getHash())) {
+        if (!passwordEncoder.matches(requestCredentials.getPassword(), user.getHash())) {
             log.debug("Incorrect password [{}] for email [{}] was used.", requestCredentials.getPassword(), requestCredentials.getEmail());
             throw new UserBadPassword("Wrong password");
         }
@@ -61,27 +60,36 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Override
-    public Optional<Session> getValidSession(String token) {
-        if (token != null) {
-            for (Session session : sessions) {
-                if (session.getToken().equals(token)) {
-                    if (session.isLive()) {
-                        return Optional.of(session);
-                    } else {
-                        sessions.remove(session);
-                        return Optional.empty();
-                    }
+    public Optional<Session> getSession(String token) {
+        for (Session session : sessions) {
+            if (session.getToken().equals(token)) {
+                if (sessionIsAlive(session)) {
+                    return Optional.of(session);
+                } else {
+                    sessions.remove(session);
+                    return Optional.empty();
                 }
             }
         }
         return Optional.empty();
     }
 
+    @Scheduled(fixedDelayString = "${session.cleanupPeriod}", initialDelayString = "${session.cleanupPeriod}")
+    public void removeOldSessions() {
+        log.info("Cleaning up dead sessions");
+
+        for (Session session : sessions) {
+            if (!sessionIsAlive(session)) {
+                sessions.remove(session);
+            }
+        }
+    }
 
     private void removeSession(User user) {
         for (Session session : sessions) {
             if (session.getUser().getId() == user.getId()) {
                 sessions.remove(session);
+                break;
             }
         }
     }
@@ -90,19 +98,13 @@ public class DefaultSecurityService implements SecurityService {
         for (Session session : sessions) {
             if (session.getToken().equals(token)) {
                 sessions.remove(session);
+                break;
             }
         }
     }
 
-    @Scheduled(fixedDelayString = "${session.cleanupPeriod}")
-    public void removeOldSessions() {
-        log.info("Cleaning up dead sessions");
-
-        for (Session session : sessions) {
-            if (!session.isLive()) {
-                sessions.remove(session);
-            }
-        }
+    private boolean sessionIsAlive(Session session) {
+        return LocalDateTime.now().isBefore(session.getExpireDate());
     }
 
     @Value("${session.lifeTimeHours}")

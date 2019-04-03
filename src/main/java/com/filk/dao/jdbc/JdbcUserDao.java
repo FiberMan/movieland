@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Slf4j
 public class JdbcUserDao implements UserDao {
-    private static final String GET_USER_BY_EMAIL = "SELECT user_id, name, email, role, hash, salt FROM \"user\" WHERE email = ?";
+    private static final String GET_USER_BY_EMAIL = "SELECT user_id, name, email, role, hash FROM \"user\" WHERE email = ?";
 
     private JdbcTemplate jdbcTemplate;
     private UserRowMapper userRowMapper = new UserRowMapper();

@@ -21,7 +21,6 @@ public class UserRowMapperTest {
         when(resultSetMock.getString("email")).thenReturn("tuzik@gmail.com");
         when(resultSetMock.getString("role")).thenReturn("USER");
         when(resultSetMock.getString("hash")).thenReturn("kljsdhfk");
-        when(resultSetMock.getString("salt")).thenReturn("83h8hfkswjeh");
 
         User user = new UserRowMapper().mapRow(resultSetMock, 0);
 
@@ -31,6 +30,5 @@ public class UserRowMapperTest {
         assertEquals("tuzik@gmail.com", user.getEmail());
         assertEquals("USER", user.getRole().toString());
         assertEquals("kljsdhfk", user.getHash());
-        assertEquals("83h8hfkswjeh", user.getSalt());
     }
 }

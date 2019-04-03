@@ -31,8 +31,7 @@ public class JdbcUserDaoITest {
         assertEquals("Рональд Рейнольдс", user.getName());
         assertEquals("ronald.reynolds66@example.com", user.getEmail());
         assertEquals(UserRole.USER, user.getRole());
-        assertEquals("$2a$10$mwlQOO42GQJ54kbUBpoHfOrrIrXnm0JcP3ryNo.1gS79DPv5mUKy6", user.getHash());
-        assertEquals("jzyG/8hU8sc2apD0JuU1fQ==", user.getSalt());
+        assertEquals("$2a$10$EWGMITT2oPHOgQNFL5Qnju4H4GqwXxonxjn5p.PkjfPYu3S2sa.qS", user.getHash());
     }
 
     @Test(expected = UserNotFound.class)

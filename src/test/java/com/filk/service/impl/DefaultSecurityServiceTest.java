@@ -8,6 +8,8 @@ import com.filk.util.UserRole;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -19,14 +21,13 @@ public class DefaultSecurityServiceTest {
 
     @Before
     public void setup() {
-        User user = new User(
-                1,
-                "User Name",
-                "ronald.reynolds66@example.com",
-                UserRole.USER,
-                "$2a$10$mwlQOO42GQJ54kbUBpoHfOrrIrXnm0JcP3ryNo.1gS79DPv5mUKy6",
-                "jzyG/8hU8sc2apD0JuU1fQ=="
-        );
+        User user = User.newBuilder()
+                .setId(1)
+                .setName("User Name")
+                .setEmail("ronald.reynolds66@example.com")
+                .setRole(UserRole.USER)
+                .setHash("$2a$10$EWGMITT2oPHOgQNFL5Qnju4H4GqwXxonxjn5p.PkjfPYu3S2sa.qS")
+                .build();
 
         when(userServiceMock.getByEmail("ronald.reynolds66@example.com")).thenReturn(user);
 
@@ -36,7 +37,7 @@ public class DefaultSecurityServiceTest {
 
     @Test
     public void login() {
-        assertTrue(session.isLive());
+        assertTrue(session.getExpireDate().isAfter(LocalDateTime.now()));
         assertNotNull(session.getToken());
         assertEquals("User Name", session.getUser().getName());
     }
@@ -46,6 +47,6 @@ public class DefaultSecurityServiceTest {
         String token = session.getToken();
         securityService.logout(token);
 
-        assertFalse(securityService.getValidSession(token).isPresent());
+        assertFalse(securityService.getSession(token).isPresent());
     }
 }

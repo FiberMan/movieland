@@ -11,8 +11,4 @@ public class Session {
     private String token;
     private User user;
     private LocalDateTime expireDate;
-
-    public boolean isLive() {
-        return LocalDateTime.now().isBefore(expireDate);
-    }
 }
