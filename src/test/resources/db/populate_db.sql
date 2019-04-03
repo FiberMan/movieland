@@ -115,16 +115,16 @@ insert into movieland.movie_genre(movie_id, genre_id) values (25, 1);
 insert into movieland.movie_genre(movie_id, genre_id) values (25, 11);
 insert into movieland.movie_genre(movie_id, genre_id) values (25, 15);
 
-insert into movieland.user(user_id, name, email, role, hash, salt) values (1, 'Рональд Рейнольдс', 'ronald.reynolds66@example.com', 'USER', 'LeA/00zUNhuKBfY3DgTtEw==', 'h7pslgkJRMZMlY4v+zplyQ==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (2, 'Дарлин Эдвардс', 'darlene.edwards15@example.com', 'USER', 'rKw+PR9UwMllTy5bfTJCqg==', 'BPTxnxQ8JJ4fy8Og1Ke2/Q==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (3, 'Габриэль Джексон', 'gabriel.jackson91@example.com', 'USER', '/voqvwxuzEVA0kZ9iUio2A==', 'lKUK+mSh58piI6THTSJ4Pw==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (4, 'Дэрил Брайант', 'daryl.bryant94@example.com', 'USER', 'U0K9foMTlDSVZ+fwqwrPgQ==', 'AWQrbewpu/hwbQT++gmC6Q==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (5, 'Нил Паркер', 'neil.parker43@example.com', 'USER', 'IKxjQDeKBtUY6gRe0lFUyw==', 'aS80Y5TxAW+NwZ0YdxSQvg==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (6, 'Трэвис Райт', 'travis.wright36@example.com', 'USER', 'QwlqpJSrO/t+wlgoLYIU0A==', 'mVCV9BdztcicjvTI7rylsw==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (7, 'Амелия Кэннеди', 'amelia.kennedy58@example.com', 'USER', 'pJE5aoEWIpby4iLBJg8c7g==', 'DDNhyqzC0j2ZAbl/A5h0qQ==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (8, 'Айда Дэвис', 'ida.davis80@example.com', 'USER', '+zDtFMQj5i2mU6bCjTQ9QA==', 'FX37I7xxRlt6yJzPH6BR+g==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (9, 'Джесси Паттерсон', 'jessie.patterson68@example.com', 'USER', 'tkYtA6k9QEglLDo/WmUEjA==', 'WxKfKaAxb8u/MuFkZSn0og==');
-insert into movieland.user(user_id, name, email, role, hash, salt) values (10, 'Деннис Крейг', 'dennis.craig82@example.com', 'USER', 'Yf23wrpy6FcBQamIegHD9w==', '5e0ZmkjZxafb92EuSQYi5Q==');
+insert into movieland.user(user_id, name, email, role, hash) values (1, 'Рональд Рейнольдс', 'ronald.reynolds66@example.com', 'USER', '$2a$10$EWGMITT2oPHOgQNFL5Qnju4H4GqwXxonxjn5p.PkjfPYu3S2sa.qS');
+insert into movieland.user(user_id, name, email, role, hash) values (2, 'Дарлин Эдвардс', 'darlene.edwards15@example.com', 'USER', '$2a$10$rkaDVJCknnfHOqiCpi7hfebfG.FrGnsB1sssOxuguWI8ekBnU1V1e');
+insert into movieland.user(user_id, name, email, role, hash) values (3, 'Габриэль Джексон', 'gabriel.jackson91@example.com', 'USER', '$2a$10$IuKbBlg/Th4Rliva5EB80uhKwr6s7BHTgL7oIMuMK1CQVhI.TrZrW');
+insert into movieland.user(user_id, name, email, role, hash) values (4, 'Дэрил Брайант', 'daryl.bryant94@example.com', 'USER', '$2a$10$IUnrYa4Ssei4/K94bcIbZeOx17vplqVOmbhgTVvMRJhweoFRFVTe.');
+insert into movieland.user(user_id, name, email, role, hash) values (5, 'Нил Паркер', 'neil.parker43@example.com', 'USER', '$2a$10$PxqIxdjbYIOgBZyQqqVLFusZ39oVhqygw6/F7Oz1HAlP2ykdIw46e');
+insert into movieland.user(user_id, name, email, role, hash) values (6, 'Трэвис Райт', 'travis.wright36@example.com', 'USER', '$2a$10$ZcdAvk4ZlGYP5RyBc9zWsu32Ul429WRFdpGM/gVquctdHFL53OU5S');
+insert into movieland.user(user_id, name, email, role, hash) values (7, 'Амелия Кэннеди', 'amelia.kennedy58@example.com', 'USER', '$2a$10$bPO6zhGtePawxAnSVVZbUuhn31DtI9M4Ycn8OuRyjzXhklEMNl8dC');
+insert into movieland.user(user_id, name, email, role, hash) values (8, 'Айда Дэвис', 'ida.davis80@example.com', 'USER', '$2a$10$B3pPbwXJ.N2CaxrR.vXsXu4/vwIiX0eIcvxoD4DzTuFe/uskYc2AO');
+insert into movieland.user(user_id, name, email, role, hash) values (9, 'Джесси Паттерсон', 'jessie.patterson68@example.com', 'USER', '$2a$10$2gr6/r9QZZN46HAw1sWP5euDEj46Vv17l3o8XCQWfIyJn5qbZl8HG');
+insert into movieland.user(user_id, name, email, role, hash) values (10, 'Деннис Крейг', 'dennis.craig82@example.com', 'USER', '$2a$10$tf4tcukNzWeGVBGqNXOc3e1KMqqb.lqHiBTDVQS/BqU9sGknb1elS');
 
 insert into movieland.review(review_id, movie_id, user_id, text) values (1, 1, 2, 'Гениальное кино! Смотришь и думаешь «Так не бывает!», но позже понимаешь, что только так и должно быть. Начинаешь заново осмысливать значение фразы, которую постоянно используешь в своей жизни, «Надежда умирает последней». Ведь если ты не надеешься, то все в твоей жизни гаснет, не остается смысла. Фильм наполнен бесконечным числом правильных афоризмов. Я уверена, что буду пересматривать его сотни раз.');
 insert into movieland.review(review_id, movie_id, user_id, text) values (2, 1, 3, 'Кино это является, безусловно, «со знаком качества». Что же до первого места в рейтинге, то, думаю, здесь имело место быть выставление «десяточек» от большинства зрителей вкупе с раздутыми восторженными откликами кинокритиков. Фильм атмосферный. Он драматичный. И, конечно, заслуживает того, чтобы находиться довольно высоко в мировом кинематографе. ');
