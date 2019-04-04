@@ -3,9 +3,12 @@ package com.filk.service.impl;
 import com.filk.entity.Session;
 import com.filk.entity.User;
 import com.filk.exception.UserBadPassword;
+import com.filk.exception.UserNotAuthenticated;
+import com.filk.exception.UserNotAuthorized;
 import com.filk.service.SecurityService;
 import com.filk.service.UserService;
 import com.filk.util.RequestCredentials;
+import com.filk.util.UserRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -73,6 +77,18 @@ public class DefaultSecurityService implements SecurityService {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Session checkPermission(String token, List<UserRole> acceptedRoles) {
+        Session session = getSession(token).orElseThrow(() -> new UserNotAuthenticated("User not authenticated"));
+
+        if(!acceptedRoles.isEmpty() && !acceptedRoles.contains(session.getUser().getRole())) {
+            throw new UserNotAuthorized("User not authorized");
+        }
+
+        return session;
+    }
+
 
     @Scheduled(fixedDelayString = "${session.cleanupPeriod}", initialDelayString = "${session.cleanupPeriod}")
     public void removeOldSessions() {

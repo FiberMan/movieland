@@ -16,6 +16,9 @@ public class Review {
     private int id;
 
     @NonNull
+    private int movieId;
+
+    @NonNull
     @JsonView(Views.Base.class)
     private User user;
 
