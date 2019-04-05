@@ -1,6 +1,7 @@
 package com.filk.service;
 
 import com.filk.entity.Session;
+import com.filk.entity.User;
 import com.filk.util.RequestCredentials;
 import com.filk.util.UserRole;
 
@@ -11,5 +12,5 @@ public interface SecurityService {
     Session login(RequestCredentials requestCredentials);
     void logout(String token);
     Optional<Session> getSession(String token);
-    Optional<Session> getSession(String token, List<UserRole> acceptedRoles);
+    boolean checkPermission(User user, List<UserRole> acceptedRoles);
 }

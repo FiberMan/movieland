@@ -78,14 +78,8 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Override
-    public Optional<Session> getSession(String token, List<UserRole> acceptedRoles) {
-        Optional<Session> session = getSession(token);
-
-        if (session.isPresent() && !acceptedRoles.isEmpty() && !acceptedRoles.contains(session.get().getUser().getRole())) {
-            throw new UserNotAuthorized("User not authorized");
-        }
-
-        return session;
+    public boolean checkPermission(User user, List<UserRole> acceptedRoles) {
+        return acceptedRoles.isEmpty() || acceptedRoles.contains(user.getRole());
     }
 
     @Scheduled(fixedDelayString = "${session.cleanupPeriod}", initialDelayString = "${session.cleanupPeriod}")

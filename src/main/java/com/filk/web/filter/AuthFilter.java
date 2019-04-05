@@ -1,6 +1,7 @@
 package com.filk.web.filter;
 
 import com.filk.entity.Session;
+import com.filk.exception.UserNotAuthorized;
 import com.filk.service.SecurityService;
 import com.filk.util.UserHolder;
 import com.filk.util.UserRole;
@@ -32,10 +33,14 @@ public class AuthFilter implements HandlerInterceptor {
             return true;
         }
 
-        Optional<Session> session = securityService.getSession(token, acceptedRoles);
+        Optional<Session> session = securityService.getSession(token);
         if (!session.isPresent()) {
             response.sendRedirect("/login");
             return false;
+        }
+
+        if (!securityService.checkPermission(session.get().getUser(), acceptedRoles)) {
+            throw new UserNotAuthorized("User not authorized");
         }
 
         UserHolder.set(session.get().getUser());
@@ -49,17 +54,15 @@ public class AuthFilter implements HandlerInterceptor {
     }
 
     private List<UserRole> getAcceptedRoles(Object handler) {
-        List<UserRole> acceptedRoles = new ArrayList<>();
-
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
             if (method.isAnnotationPresent(ProtectedBy.class)) {
                 ProtectedBy annotation = method.getAnnotation(ProtectedBy.class);
-                acceptedRoles = Arrays.asList(annotation.userRole());
+                return Arrays.asList(annotation.userRole());
             }
         }
 
-        return acceptedRoles;
+        return Collections.emptyList();
     }
 }

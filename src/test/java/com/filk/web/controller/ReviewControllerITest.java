@@ -62,7 +62,9 @@ public class ReviewControllerITest {
                 .build();
         Session session = new Session("user_token", user, LocalDateTime.now().plusHours(2));
 
-        when(securityService.getSession("user_token", Collections.singletonList(UserRole.USER))).thenReturn(Optional.of(session));
+        when(securityService.getSession("user_token")).thenReturn(Optional.of(session));
+        when(securityService.checkPermission(user, Collections.singletonList(UserRole.USER))).thenReturn(true);
+
 
         mockMvc.perform(post("/review")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +84,7 @@ public class ReviewControllerITest {
 
     @Test
     public void addMovieReviewNotAuthenticated() throws Exception {
-        when(securityService.getSession("user_token", Collections.singletonList(UserRole.USER))).thenReturn(Optional.empty());
+        when(securityService.getSession("user_token")).thenReturn(Optional.empty());
 
         mockMvc.perform(post("/review")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,7 +106,7 @@ public class ReviewControllerITest {
         Session session = new Session("user_token", user, LocalDateTime.now().plusHours(2));
 
         when(securityService.getSession("user_token")).thenReturn(Optional.of(session));
-        when(securityService.getSession("user_token", Collections.singletonList(UserRole.USER))).thenCallRealMethod();
+        when(securityService.checkPermission(user, Collections.singletonList(UserRole.USER))).thenReturn(false);
 
         mockMvc.perform(post("/review")
                 .contentType(MediaType.APPLICATION_JSON)
