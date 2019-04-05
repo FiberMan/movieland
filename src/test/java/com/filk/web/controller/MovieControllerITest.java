@@ -73,8 +73,11 @@ public class MovieControllerITest {
         User user1 = new User(1, "Вася Пупыч");
         User user2 = new User(2, "Иван Василич");
 
-        Review review1 = new Review(1, user1, "ревью №1");
-        Review review2 = new Review(2, user2, "ревью №2");
+        Movie movieR = new Movie();
+        movieR.setId(1);
+
+        Review review1 = new Review(1, movieR, user1, "ревью №1");
+        Review review2 = new Review(2, movieR, user2, "ревью №2");
 
         movie1.setCountries(Arrays.asList(country1, country2));
         movie1.setGenres(Arrays.asList(genre1, genre2));

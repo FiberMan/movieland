@@ -1,15 +1,16 @@
 package com.filk.web.controller;
 
 import com.filk.entity.Review;
-import com.filk.entity.Session;
+import com.filk.entity.User;
 import com.filk.service.ReviewService;
 import com.filk.util.RequestReview;
+import com.filk.util.UserHolder;
+import com.filk.util.UserRole;
+import com.filk.web.filter.ProtectedBy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class ReviewController {
@@ -21,9 +22,10 @@ public class ReviewController {
     }
 
     @PostMapping("/review")
-    public Review addMovieReview(@RequestBody RequestReview requestReview, HttpServletRequest httpServletRequest) {
-        Session session = (Session) httpServletRequest.getAttribute("session");
+    @ProtectedBy(userRole = {UserRole.USER})
+    public Review addMovieReview(@RequestBody RequestReview requestReview) {
+        User user = UserHolder.get();
 
-        return reviewService.add(requestReview, session.getUser());
+        return reviewService.add(requestReview, user);
     }
 }

@@ -11,5 +11,5 @@ public interface SecurityService {
     Session login(RequestCredentials requestCredentials);
     void logout(String token);
     Optional<Session> getSession(String token);
-    Session checkPermission(String token, List<UserRole> acceptedRoles);
+    Optional<Session> getSession(String token, List<UserRole> acceptedRoles);
 }

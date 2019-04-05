@@ -1,5 +1,6 @@
 package com.filk.dao.jdbc.mapper;
 
+import com.filk.entity.Movie;
 import com.filk.entity.Review;
 import com.filk.entity.User;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,8 +17,11 @@ public class ReviewRowMapper implements RowMapper<Review> {
                 rs.getString("user_name")
         );
 
+        Movie movie = new Movie();
+        movie.setId(rs.getInt("movie_id"));
+
         review.setId(rs.getInt("review_id"));
-        review.setMovieId(rs.getInt("movie_id"));
+        review.setMovie(movie);
         review.setText(rs.getString("text"));
         review.setUser(user);
 

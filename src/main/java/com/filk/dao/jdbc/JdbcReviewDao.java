@@ -2,6 +2,7 @@ package com.filk.dao.jdbc;
 
 import com.filk.dao.ReviewDao;
 import com.filk.dao.jdbc.mapper.ReviewRowMapper;
+import com.filk.entity.Movie;
 import com.filk.entity.Review;
 import com.filk.entity.User;
 import com.filk.util.RequestReview;
@@ -50,9 +51,12 @@ public class JdbcReviewDao implements ReviewDao {
 
         namedJdbcTemplate.update(INSERT_REVIEW, parameterSource, keyHolder, new String[]{"review_id"});
 
+        Movie movie = new Movie();
+        movie.setId(requestReview.getMovieId());
+
         Review review = new Review();
         review.setId((int) keyHolder.getKey());
-        review.setMovieId(requestReview.getMovieId());
+        review.setMovie(movie);
         review.setText(requestReview.getText());
         review.setUser(user);
 

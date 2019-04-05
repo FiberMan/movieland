@@ -3,7 +3,6 @@ package com.filk.service.impl;
 import com.filk.entity.Session;
 import com.filk.entity.User;
 import com.filk.exception.UserBadPassword;
-import com.filk.exception.UserNotAuthenticated;
 import com.filk.exception.UserNotAuthorized;
 import com.filk.service.SecurityService;
 import com.filk.service.UserService;
@@ -31,7 +30,7 @@ public class DefaultSecurityService implements SecurityService {
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public DefaultSecurityService(UserService userService) {
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
@@ -79,16 +78,15 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Override
-    public Session checkPermission(String token, List<UserRole> acceptedRoles) {
-        Session session = getSession(token).orElseThrow(() -> new UserNotAuthenticated("User not authenticated"));
+    public Optional<Session> getSession(String token, List<UserRole> acceptedRoles) {
+        Optional<Session> session = getSession(token);
 
-        if(!acceptedRoles.isEmpty() && !acceptedRoles.contains(session.getUser().getRole())) {
+        if (session.isPresent() && !acceptedRoles.isEmpty() && !acceptedRoles.contains(session.get().getUser().getRole())) {
             throw new UserNotAuthorized("User not authorized");
         }
 
         return session;
     }
-
 
     @Scheduled(fixedDelayString = "${session.cleanupPeriod}", initialDelayString = "${session.cleanupPeriod}")
     public void removeOldSessions() {
