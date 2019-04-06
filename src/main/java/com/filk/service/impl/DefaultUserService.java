@@ -1,7 +1,8 @@
-package com.filk.service;
+package com.filk.service.impl;
 
 import com.filk.dao.UserDao;
 import com.filk.entity.User;
+import com.filk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

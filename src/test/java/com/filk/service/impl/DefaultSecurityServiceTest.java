@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 public class DefaultSecurityServiceTest {
     private UserService userServiceMock = mock(UserService.class);
-    private DefaultSecurityService securityService = new DefaultSecurityService(userServiceMock);
+    private DefaultSecurityService securityService = new DefaultSecurityService();
     private Session session;
 
     @Before
@@ -31,6 +31,7 @@ public class DefaultSecurityServiceTest {
 
         when(userServiceMock.getByEmail("ronald.reynolds66@example.com")).thenReturn(user);
 
+        securityService.setUserService(userServiceMock);
         securityService.setSessionLifeTimeHours(2);
         session = securityService.login(new RequestCredentials("ronald.reynolds66@example.com", "paco"));
     }

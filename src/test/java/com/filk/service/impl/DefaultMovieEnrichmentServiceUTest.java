@@ -29,8 +29,11 @@ public class DefaultMovieEnrichmentServiceUTest {
         User user1 = new User(1, "Вася Пупыч");
         User user2 = new User(2, "Иван Василич");
 
-        Review review1 = new Review(1, user1, "ревью №1");
-        Review review2 = new Review(2, user2, "ревью №2");
+        Movie movie1 = new Movie();
+        movie1.setId(33);
+
+        Review review1 = new Review(1, movie1, user1, "ревью №1");
+        Review review2 = new Review(2, movie1, user2, "ревью №2");
 
         Movie movie = new Movie(33, "Очень Джава Кино", "Very Java Movie");
 
