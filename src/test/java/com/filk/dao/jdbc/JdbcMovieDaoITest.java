@@ -135,13 +135,9 @@ public class JdbcMovieDaoITest {
     public void getRandom() {
         List<Movie> movies;
 
-        movies = movieDao.getRandom(3);
+        movies = movieDao.getRandom();
         assertNotNull(movies);
         assertEquals(3, movies.size());
-
-        movies = movieDao.getRandom(7);
-        assertNotNull(movies);
-        assertEquals(7, movies.size());
     }
 
     @Test

@@ -9,7 +9,6 @@ import com.filk.service.CurrencyService;
 import com.filk.service.MovieEnrichmentService;
 import com.filk.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +18,6 @@ public class DefaultMovieService implements MovieService {
     private MovieDao movieDao;
     private MovieEnrichmentService movieEnrichmentService;
     private CurrencyService currencyService;
-
-    @Value("${movie.randomCount}")
-    private int randomCount;
 
     @Autowired
     public DefaultMovieService(MovieDao movieDao, MovieEnrichmentService movieEnrichmentService, CurrencyService currencyService) {
@@ -37,7 +33,7 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public List<Movie> getRandom() {
-        return movieDao.getRandom(randomCount);
+        return movieDao.getRandom();
     }
 
     @Override
@@ -62,6 +58,8 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public Movie edit(MoviePutDto moviePutDto) {
-        return movieDao.edit(moviePutDto);
+        Movie movieToEdit = movieDao.getById(moviePutDto.getMovieId());
+
+        return movieDao.edit(moviePutDto, movieToEdit);
     }
 }
