@@ -24,6 +24,8 @@ insert into movieland.movie(movie_id, name, name_original, year, description, po
 insert into movieland.movie(movie_id, name, name_original, year, description, poster_url, rating, price) values (24, 'Джанго освобожденный', 'Django Unchained', '2012', 'Эксцентричный охотник за головами, также известный как «Дантист», промышляет отстрелом самых опасных преступников. Работенка пыльная, и без надежного помощника ему не обойтись. Но как найти такого и желательно не очень дорогого? Беглый раб по имени Джанго — прекрасная кандидатура. Правда, у нового помощника свои мотивы — кое с чем надо разобраться…', 'https://images-na.ssl-images-amazon.com/images/M/MV5BMjIyNTQ5NjQ1OV5BMl5BanBnXkFtZTcwODg1MDU4OA@@._V1._SY209_CR0,0,140,209_.jpg', 8.5, 170.00);
 insert into movieland.movie(movie_id, name, name_original, year, description, poster_url, rating, price) values (25, 'Танцующий с волками', 'Dances with Wolves', '1990', 'Действие фильма происходит в США во времена Гражданской войны. Лейтенант американской армии Джон Данбар после ранения в бою просит перевести его на новое место службы ближе к западной границе США. Место его службы отдалённый маленький форт. Непосредственный его командир покончил жизнь самоубийством, а попутчик Данбара погиб в стычке с индейцами после того, как довез героя до места назначения. Людей, знающих, что Данбар остался один в форте и должен выжить в условиях суровой природы, и в соседстве с кажущимися негостеприимными коренными обитателями Северной Америки, просто не осталось. Казалось, он покинут всеми. Постепенно лейтенант осваивается, он ведет записи в дневнике…', 'https://images-na.ssl-images-amazon.com/images/M/MV5BMTY3OTI5NDczN15BMl5BanBnXkFtZTcwNDA0NDY3Mw@@._V1._SX140_CR0,0,140,209_.jpg', 8.00, 120.55);
 
+ALTER SEQUENCE movieland.movie_movie_id_seq RESTART WITH 26;
+
 insert into movieland.genre(genre_id, name) values (1, 'драма');
 insert into movieland.genre(genre_id, name) values (2, 'криминал');
 insert into movieland.genre(genre_id, name) values (3, 'фэнтези');
@@ -116,7 +118,7 @@ insert into movieland.movie_genre(movie_id, genre_id) values (25, 11);
 insert into movieland.movie_genre(movie_id, genre_id) values (25, 15);
 
 insert into movieland.user(user_id, name, email, role, hash) values (1, 'Рональд Рейнольдс', 'ronald.reynolds66@example.com', 'USER', '$2a$10$EWGMITT2oPHOgQNFL5Qnju4H4GqwXxonxjn5p.PkjfPYu3S2sa.qS');
-insert into movieland.user(user_id, name, email, role, hash) values (2, 'Дарлин Эдвардс', 'darlene.edwards15@example.com', 'USER', '$2a$10$rkaDVJCknnfHOqiCpi7hfebfG.FrGnsB1sssOxuguWI8ekBnU1V1e');
+insert into movieland.user(user_id, name, email, role, hash) values (2, 'Дарлин Эдвардс', 'darlene.edwards15@example.com', 'ADMIN', '$2a$10$rkaDVJCknnfHOqiCpi7hfebfG.FrGnsB1sssOxuguWI8ekBnU1V1e');
 insert into movieland.user(user_id, name, email, role, hash) values (3, 'Габриэль Джексон', 'gabriel.jackson91@example.com', 'USER', '$2a$10$IuKbBlg/Th4Rliva5EB80uhKwr6s7BHTgL7oIMuMK1CQVhI.TrZrW');
 insert into movieland.user(user_id, name, email, role, hash) values (4, 'Дэрил Брайант', 'daryl.bryant94@example.com', 'USER', '$2a$10$IUnrYa4Ssei4/K94bcIbZeOx17vplqVOmbhgTVvMRJhweoFRFVTe.');
 insert into movieland.user(user_id, name, email, role, hash) values (5, 'Нил Паркер', 'neil.parker43@example.com', 'USER', '$2a$10$PxqIxdjbYIOgBZyQqqVLFusZ39oVhqygw6/F7Oz1HAlP2ykdIw46e');

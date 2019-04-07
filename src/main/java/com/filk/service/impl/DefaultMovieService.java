@@ -1,6 +1,8 @@
 package com.filk.service.impl;
 
 import com.filk.dao.MovieDao;
+import com.filk.dto.MoviePostDto;
+import com.filk.dto.MoviePutDto;
 import com.filk.entity.Movie;
 import com.filk.util.RequestParameters;
 import com.filk.service.CurrencyService;
@@ -51,5 +53,15 @@ public class DefaultMovieService implements MovieService {
         movie.setPrice(currencyService.convert(movie.getPrice(), requestParameters.getCurrency()));
 
         return movie;
+    }
+
+    @Override
+    public Movie add(MoviePostDto moviePostDto) {
+        return movieDao.add(moviePostDto);
+    }
+
+    @Override
+    public Movie edit(MoviePutDto moviePutDto) {
+        return movieDao.edit(moviePutDto);
     }
 }
