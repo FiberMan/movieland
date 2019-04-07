@@ -10,6 +10,7 @@ import com.filk.entity.Movie;
 import com.filk.util.RequestParameters;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -46,6 +47,8 @@ public class JdbcMovieDao implements MovieDao {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
+    private int randomCount;
+
     @Autowired
     public JdbcMovieDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -59,9 +62,9 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getRandom(int count) {
+    public List<Movie> getRandom() {
         log.debug("Getting random movies");
-        return jdbcTemplate.query(GET_RANDOM_MOVIES, movieRowMapper, count);
+        return jdbcTemplate.query(GET_RANDOM_MOVIES, movieRowMapper, randomCount);
     }
 
     @Override
@@ -104,28 +107,27 @@ public class JdbcMovieDao implements MovieDao {
 
     @Override
     @Transactional
-    public Movie edit(MoviePutDto moviePutDto) {
+    public Movie edit(MoviePutDto moviePutDto, Movie movieToEdit) {
         int movieId = moviePutDto.getMovieId();
         int[] countries = moviePutDto.getCountries();
         int[] genres = moviePutDto.getGenres();
 
         log.debug("Updating movie ID {}", movieId);
 
-        Movie movie = getById(movieId);
-        updateFromMoviePutDto(moviePutDto, movie);
+        updateFromMoviePutDto(moviePutDto, movieToEdit);
 
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        parameterSource.addValue("movie_id", movie.getId());
-        parameterSource.addValue("name", movie.getNameRussian());
-        parameterSource.addValue("name_original", movie.getNameNative());
-        parameterSource.addValue("poster_url", movie.getPicturePath());
+        parameterSource.addValue("movie_id", movieToEdit.getId());
+        parameterSource.addValue("name", movieToEdit.getNameRussian());
+        parameterSource.addValue("name_original", movieToEdit.getNameNative());
+        parameterSource.addValue("poster_url", movieToEdit.getPicturePath());
         namedJdbcTemplate.update(UPDATE_MOVIE, parameterSource);
         namedJdbcTemplate.update(DELETE_MOVIE_COUNTRY, parameterSource);
         namedJdbcTemplate.update(DELETE_MOVIE_GENRE, parameterSource);
         namedJdbcTemplate.batchUpdate(INSERT_MOVIE_COUNTRY, getMovieCountryParams(movieId, countries));
         namedJdbcTemplate.batchUpdate(INSERT_MOVIE_GENRE, getMovieGenreParams(movieId, genres));
 
-        return movie;
+        return movieToEdit;
     }
 
     private MapSqlParameterSource[] getMovieCountryParams(int movieId, int[] countries) {
@@ -151,16 +153,6 @@ public class JdbcMovieDao implements MovieDao {
     private Movie convertFromMoviePostDto(MoviePostDto moviePostDto, int movieId) {
         Movie movie = new Movie();
 
-        List<Country> countries = new ArrayList<>();
-        for (int countryId : moviePostDto.getCountries()) {
-            countries.add(new Country(countryId, ""));
-        }
-
-        List<Genre> genres = new ArrayList<>();
-        for (int genreId : moviePostDto.getGenres()) {
-            genres.add(new Genre(genreId, ""));
-        }
-
         movie.setId(movieId);
         movie.setNameRussian(moviePostDto.getNameRussian());
         movie.setNameNative(moviePostDto.getNameNative());
@@ -168,8 +160,8 @@ public class JdbcMovieDao implements MovieDao {
         movie.setDescription(moviePostDto.getDescription());
         movie.setPicturePath(moviePostDto.getPicturePath());
         movie.setPrice(moviePostDto.getPrice());
-        movie.setCountries(countries);
-        movie.setGenres(genres);
+        movie.setCountries(convertCountries(moviePostDto.getCountries()));
+        movie.setGenres(convertGenres(moviePostDto.getGenres()));
 
         return movie;
     }
@@ -178,6 +170,24 @@ public class JdbcMovieDao implements MovieDao {
         movie.setNameRussian(moviePutDto.getNameRussian());
         movie.setNameNative(moviePutDto.getNameNative());
         movie.setPicturePath(moviePutDto.getPicturePath());
+        movie.setCountries(convertCountries(moviePutDto.getCountries()));
+        movie.setGenres(convertGenres(moviePutDto.getGenres()));
+    }
+
+    private List<Country> convertCountries(int[] countries) {
+        List<Country> countryList = new ArrayList<>();
+        for (int countryId : countries) {
+            countryList.add(new Country(countryId, ""));
+        }
+        return countryList;
+    }
+
+    private List<Genre> convertGenres(int[] genres) {
+        List<Genre> genreList = new ArrayList<>();
+        for (int genreId :genres) {
+            genreList.add(new Genre(genreId, ""));
+        }
+        return genreList;
     }
 
     private String addOrder(RequestParameters requestParameters) {
@@ -186,5 +196,10 @@ public class JdbcMovieDao implements MovieDao {
         }
 
         return " ORDER BY movie_id";
+    }
+
+    @Value("${movie.randomCount}")
+    public void setRandomCount(int randomCount) {
+        this.randomCount = randomCount;
     }
 }
