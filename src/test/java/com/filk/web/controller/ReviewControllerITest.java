@@ -65,9 +65,8 @@ public class ReviewControllerITest {
         when(securityService.getSession("user_token")).thenReturn(Optional.of(session));
         when(securityService.checkPermission(user, Collections.singletonList(UserRole.USER))).thenReturn(true);
 
-
         mockMvc.perform(post("/review")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"movieId\" : 11,\"text\" : \"Тестовое ревью 11\"}")
                 .header("uuid", "user_token"))
                 .andDo(print())
@@ -87,7 +86,7 @@ public class ReviewControllerITest {
         when(securityService.getSession("user_token")).thenReturn(Optional.empty());
 
         mockMvc.perform(post("/review")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"movieId\" : 11,\"text\" : \"Тестовое ревью 11\"}")
                 .header("uuid", "user_token"))
                 .andDo(print())
@@ -109,7 +108,7 @@ public class ReviewControllerITest {
         when(securityService.checkPermission(user, Collections.singletonList(UserRole.USER))).thenReturn(false);
 
         mockMvc.perform(post("/review")
-                .contentType(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"movieId\" : 11,\"text\" : \"Тестовое ревью 11\"}")
                 .header("uuid", "user_token"))
                 .andDo(print())
